@@ -1,0 +1,3 @@
+dpp_buyers_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: DppBuyersBundle:Default:index }

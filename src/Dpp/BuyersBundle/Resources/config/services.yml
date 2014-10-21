@@ -1,0 +1,4 @@
+services:
+#    dpp_buyers.example:
+#        class: Dpp\BuyersBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

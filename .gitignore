@@ -1,0 +1,27 @@
+#
+# Exclusion from GIT list
+#
+# basic symfony files
+# 
+#
+.travis.yml
+composer.json
+composer.lock
+LICENSE
+README.md
+UPGRADE-2.2.md
+UPGRADE.md
+#
+# exlude app, bin, vendor directory's 
+# but include  app/Ressources
+# include also the routing file by commande add -f manualy
+#
+/app/cache/*
+/app/logs/*
+/app/bootstrap*
+/app/*
+/app/config/routing*.yml
+/app/config/parameters.yml
+/bin
+/web/bundles
+/vendor
