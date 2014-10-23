@@ -1,0 +1,4 @@
+services:
+#    dpp_customers.example:
+#        class: Dpp\CustomersBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

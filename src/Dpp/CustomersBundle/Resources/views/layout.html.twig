@@ -1,0 +1,21 @@
+{# src/Dpp/DemoBundle/Resources/views/layout.html.twig #}
+
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Dpp - {{ parent() }}
+{% endblock %}
+{% block headsurtitre %}
+  <div id="site-name" >BackOffice test</div>                  
+{% endblock%}
+
+{% block containt %}
+    <div class="span2 spangris">
+        Ici un texte d'explication
+    </div>
+    <div class="span10">
+            {% block Dpp_body %}
+            
+            {% endblock %}
+    </div>
+{% endblock %}

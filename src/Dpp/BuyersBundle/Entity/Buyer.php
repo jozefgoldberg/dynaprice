@@ -93,7 +93,7 @@ class Buyer
      * @param \DateTime $firstAccess
      * @return Buyer
      */
-    public function setFirsAccess($firstAccess)
+    public function setFirstAccess($firstAccess)
     {
         $this->firstAccess = $firstAccess;
 

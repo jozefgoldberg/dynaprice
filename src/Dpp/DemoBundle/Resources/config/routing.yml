@@ -1,0 +1,8 @@
+dpp_demo_homepage:
+    path:     /
+    defaults: { _controller: DppDemoBundle:Default:index }
+dpp_demo_view:
+    path:      /view/{reference}
+    defaults:  { _controller: DppDemoBundle:Default:view }
+    requirements:
+        id:  \d+

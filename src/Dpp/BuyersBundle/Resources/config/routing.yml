@@ -1,3 +1,7 @@
 dpp_buyers_homepage:
     path:     /hello/{name}
     defaults: { _controller: DppBuyersBundle:Default:index }
+dpp_buyers_add:
+    path:      /add/{id}
+    defaults:  { _controller: DppBuyersBundle:Buyers:create}
+        

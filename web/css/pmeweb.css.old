@@ -1,0 +1,71 @@
+/*!
+ * Pmeweb - complement css
+ * 
+ */
+.hero-unit {
+  padding-top: 0px;
+  margin-bottom: 0px;
+  height: 170px;
+}
+#header{
+    height: 170px;
+    background-color: #99AACC;
+}
+.user-bar {
+    height: 20px;
+    margin-left: 10px; 
+    padding-right:10px;
+    width: 99.2%;
+    color: #000000; 
+    float: right;
+    text-align: right;
+    background-color: #ccc;
+}
+#name-and-slogan {
+  float: left; /* LTR */
+  padding-top: 5px;
+  margin: 0 0 30px 15px; /* LTR */
+}
+#site-name {
+  font-size: 1.821em;
+  color: #686868;
+  line-height: 1;
+}
+h1#site-name {
+  *margin: 0;
+}
+#site-name a {
+  font-weight: normal;
+}
+#site-slogan {
+  font-size: 0.929em;
+  margin-top: 7px;
+  word-spacing: 0.1em;
+  font-style: italic;
+}
+. labelform {
+    padding-top: 5px;
+    margin-left:10px;
+    display: inline-block;
+}
+.label-and-input {
+  padding-top: 5px;
+}
+.label-and-input label {
+  display: inline-block;
+  *font-weight: bold;
+}
+.pmeweb-float-pad {
+    float: right;
+    padding-top: 5px;
+}
+.pmeweb-msg {
+    float: left;
+    color: red;
+    font-style: italic;
+}
+
+th,
+td {
+    margin: 5px;
+}

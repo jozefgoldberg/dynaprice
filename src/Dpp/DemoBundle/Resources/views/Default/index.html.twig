@@ -1,0 +1,52 @@
+{# src\Dpp\DemoBundle\Resources\views\Default\index.html.twig #}
+
+{% extends "DppDemoBundle::layout.html.twig" %}
+
+{% block title %}
+	Acceuil {{ parent() }}
+{% endblock %}
+
+{% block DppDemo_body %}
+	<div class="row span10">
+    <h3>Liste des produits</h3>
+    <table class="table-bordered">
+        <thead>
+            <tr>
+                <th class="span2"></th>
+                <th class="span2"></th>
+                <th class="span2"></th>
+                <th class="span2"></th>
+            </tr>
+        </thead>   
+        <tr>
+            <td>P1.1</td>
+            <td>P1.2</td>
+            <td>P1.3</td>
+            <td>
+                <a href="{{ path('dpp_demo_view', {'reference': 'P1.4'}) }}">P1.4</a>
+            </td>
+        </tr>
+        <tr>
+            <td>P2.1</td>
+            <td>P2.2</td>
+            <td>P2.3</td>
+            <td>
+                <a href="{{ path('dpp_demo_view', {'reference': 'P2.4'}) }}">P2.4</a>
+            </td>
+        </tr>
+        <tr>
+            <td>P3.1</td>
+            <td>P3.2</td>
+            <td>P3.3</td>
+            <td>
+                <a href="{{ path('dpp_demo_view', {'reference': 'P3.4'}) }}">P3.4</a>
+            </td>
+        </tr>
+    </table>
+    <div class="row">
+        <div class="span5"> </div>
+        <div class="span3"> <br>
+        <a href="#" class="btn pull-right"><i class="icon-plus-sign"></i> suite ....</a>
+    </div>
+</div>  
+{% endblock %}

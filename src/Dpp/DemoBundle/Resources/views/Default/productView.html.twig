@@ -1,0 +1,39 @@
+{# src\Dpp\DemoBundle\Resources\views\Default\productView.html.twig #}
+
+{% extends "DppDemoBundle::layout.html.twig" %}
+
+{% block title %}
+    Product  - {{ parent() }}
+{% endblock %}
+
+{% block DppDemo_body %}
+<div class="row margeR0">
+    <h3>
+        Produit: produit  {{reference}}
+    </h3>
+</div>
+<div class="boite">
+    <div class="row">
+        <div class="span2">Product name</div>
+        <div class="span3"><b>{{ reference }}</b></div>
+    </div>
+     <div class="row">
+        <div class="span2">Description: </div>
+        <div class="span3">text descriptif tarattata <br>gtatatzv ffddfdsf </div>
+    </div>
+</div>
+  
+    <div class="row"><br><br></div>
+    <div class="row">
+        <div class="span5"> 
+            <a href="{{ path('dpp_demo_homepage') }}" class="btn pull-left">
+                <i class="icon-chevron-left"></i>return to home
+            </a>
+        </div>
+        <div class="span5">
+            
+             
+        </div>
+    </div>
+	
+{% endblock %}
