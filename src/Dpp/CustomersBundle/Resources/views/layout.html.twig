@@ -8,7 +8,9 @@
 {% block headsurtitre %}
   <div id="site-name" >BackOffice test</div>                  
 {% endblock%}
-
+{% block navigation %}
+    <li><a href="{{ path('dpp_customers_products') }}">Products</a></li>
+{% endblock %} 
 {% block containt %}
     <div class="span2 spangris">
         Ici un texte d'explication

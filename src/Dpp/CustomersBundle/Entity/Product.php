@@ -31,6 +31,14 @@ class Product
    * @ORM\JoinColumn(nullable=false)
    */
     private $customer;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+    
     /**
      * @var string
      *
@@ -79,6 +87,28 @@ class Product
         return $this->customer;
     }
     
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Product
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
     
     /**
      * Set urlRef

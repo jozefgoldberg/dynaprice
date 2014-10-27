@@ -5,6 +5,7 @@ namespace Dpp\BuyersBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Buyer
@@ -52,7 +53,29 @@ class Buyer
      * @ORM\Column(name="permCode", type="string", length=32, nullable=true )
      */
     private $permCode;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="totalAccess", type="integer",  nullable=true )
+     */
+    private $totalAccess;
+    
+    /**
+    * @ORM\OneToMany(targetEntity="Dpp\BuyersBundle\Entity\BuyerProduct", mappedBy="product")
+    */
+    private $buyerProducts;
 
+
+     /**
+    * Constructor
+    */
+    public function __construct()
+    {
+        $this->firstAccess = new \DateTime();
+        $this->totalAccess = 1;
+        $this->buyerProducts = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -157,12 +180,47 @@ class Buyer
     }
     
     /**
-    * Constructeur
-    * la first date = la date du jour
-    *
-    */
-    public function __construct()
+     * Set totalAccess
+     *
+     * @param integer $totalAccess
+     * @return Buyer
+     */
+    public function setTotalAccess($totalAccess)
     {
-        $this->firstAccess = new \DateTime();
+        $this->totalAccess = $totalAccess;
+
+        return $this;
     }
+
+    /**
+     * Get totalAccess
+     *
+     * @return string 
+     */
+    public function getTotalAccess()
+    {
+        return $this->totalAccess;
+    }
+       
+    /**
+    * Add, remove, and get BuyersProduct collection
+    */
+    
+    public function addBuyerProduct(BuyerProduct $buyerProduct)
+    {
+        $this->buyerProducts[] = $buyerProduct;
+        return $this;
+    }
+
+    public function removeBuyerProduct(buyerProduct $buyerProduct)
+    {
+        $this->buyerProducts->removeElement($buyerProduct);
+    }
+
+    public function getBuyerProducts()
+    {
+        return $this->buyerProducts;
+    }
+    
+  
 }

@@ -59,7 +59,7 @@ class Customer
     */
     public function __construct()
     {
-        $this->applications = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     /**
@@ -154,12 +154,13 @@ class Customer
 
     public function removeProduct(Product $product)
     {
-        $this->applications->removeElement($product);
+        $this->products->removeElement($product);
     }
 
     public function getProducts()
     {
         return $this->products;
     }
+    
     
 }

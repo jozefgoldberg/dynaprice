@@ -9,3 +9,7 @@ dpp_customers_list:
 dpp_customers_customer_add:
     path:      /add
     defaults:  { _controller: DppCustomersBundle:Customer:create}
+    
+dpp_customers_products:
+    path:      /products
+    defaults:  { _controller: DppCustomersBundle:Product:listAll}

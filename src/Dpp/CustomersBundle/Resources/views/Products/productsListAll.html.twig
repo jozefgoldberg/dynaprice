@@ -1,0 +1,39 @@
+{# src/Dpp/CustomersBundle/Resources/views/Product/productListAll.html.twig #}
+ 
+{% extends "DppCustomersBundle::layout.html.twig" %}
+
+{% block title %}
+    Liste  - {{ parent() }}
+{% endblock %}
+
+{% block Dpp_body %}
+<div class="row span10">
+<h3>{{ 'Dpp.product.liste'|trans }}</h3>
+{% if products %}
+    <table class="table-bordered">
+        <thead>
+            <tr>
+                <th class="span2">{{ 'Dpp.product.customer.name'|trans }}</th>
+                <th class="span2">{{ 'Dpp.product.name'|trans }}</th>
+                <th class="span2">{{ 'Dpp.product.reference'|trans }}</th>
+                <th class="span2">{{ 'Dpp.product.pricingType'|trans }}</th>
+            </tr>
+        </thead>   
+        <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.customer.name }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.urlRef }}</td>
+            <td>{{ product.pricingType }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    {{ 'Dpp.product.notfound'|trans }}
+{% endif %}
+    <div class="row">
+</div>  
+{% endblock %}
+  

@@ -1,0 +1,14 @@
+{# src/Dpp/CustomersBundle/Resources/views/Customer/customerform.html.twig #}
+ {% form_theme form 'DppCustomersBundle:Default:fields.html.twig' %}
+ 
+<div class="well">
+    <form method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" class="btn btn-primary" />
+    </form>
+    <div class="pmeweb-msg span6">
+                {% for flash in app.session.getFlashBag("error") %}                  
+                        {{ flash[0]|trans }}
+                {% endfor %}
+    </div>
+</div>

@@ -1,6 +1,6 @@
 <?php
 
-// src\Dpp\CustomersBundle\Controller\CustomerController.php
+// src\Dpp\CustomersBundle\Controller\ProductController.php
 
 namespace Dpp\CustomersBundle\Controller;
 
@@ -8,19 +8,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Dpp\CustomersBundle\Entity\Customer;
-use Dpp\CustomersBundle\Form\Customer\CustomerType;
+use Dpp\CustomersBundle\Entity\Product;
+use Dpp\CustomersBundle\Form\Product\CustomerType;
 
 
 
-class CustomerController extends Controller
+class ProductController extends Controller
 {
-    public function listAction()
+    public function listAllAction()
     {
 	  $entityManager = $this->getDoctrine()->getManager();
-      $customers = $entityManager->getRepository('DppCustomersBundle:Customer')->findAll();
+      $products = $entityManager->getRepository('DppCustomersBundle:Product')->findAll();
+      return $this->render('DppCustomersBundle:Products:productsListAll.html.twig',array('products' => $products));
+    }
+    
+    public function listAction(Customer $customer)
+    {
+	  $entityManager = $this->getDoctrine()->getManager();
+      $product = $entityManager->getRepository('DppCustomersBundle:Product')->findAll();
       return $this->render('DppCustomersBundle:Customer:customerList.html.twig',array('customers' => $customers));
     }
-    public function createAction()
+    public function createAction(Customer $customer)
     {
 		$customer = new Customer(); // Création de l'entité
         $form = $this->createForm(new CustomerType, $customer);        

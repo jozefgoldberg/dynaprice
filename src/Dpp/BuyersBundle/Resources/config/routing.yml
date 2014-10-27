@@ -1,7 +1,11 @@
-dpp_buyers_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: DppBuyersBundle:Default:index }
 dpp_buyers_add:
     path:      /add/{id}
     defaults:  { _controller: DppBuyersBundle:Buyers:create}
         
+dpp_buyers_addX:
+    path:      /addX/{id}
+    defaults:  { _controller: DppBuyersBundle:Buyers:createX}
+        
+dpp_buyars_accessBruyerFromCustomer:
+    path:      /abfc/{domaine}/{uuid}
+    defaults:  { _controller: DppBuyersBundle:Buyers:accessBruyerFromCustomer}

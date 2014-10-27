@@ -1,0 +1,46 @@
+{# src/Dpp/CustomersBundle/Resources/views/Customer/customerList.html.twig #}
+ 
+{% extends "DppCustomersBundle::layout.html.twig" %}
+
+{% block title %}
+    Liste  - {{ parent() }}
+{% endblock %}
+
+{% block Dpp_body %}
+<div class="row span10">
+<h3>{{ 'Dpp.customer.liste'|trans }}</h3>
+{% if customers %}
+    <table class="table-bordered">
+        <thead>
+            <tr>
+                <th class="span2">{{ 'Dpp.customer.name'|trans }}</th>
+                <th class="span2">{{ 'Dpp.customer.domaine'|trans }}</th>
+                <th class="span3">{{ 'Dpp.customer.princingType'|trans }}</th>
+                <th class="span1">Actions</th>
+            </tr>
+        </thead>   
+        <tbody>
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.domaine }}</td>
+            <td>{{ customer.princingType }}</td>
+            <td>
+                <a href="#">delete</a>
+                <a href="#">edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    {{ 'Dpp.customer.notfound'|trans }}
+{% endif %}
+    <div class="row">
+        <div class="span5"> </div>
+        <div class="span5">
+        <a href="{{ path('dpp_customers_customer_add') }}" class="grph-btn">{{ 'Dpp.customer.add_buton'|trans }}</a>
+    </div>
+</div>  
+{% endblock %}
+  
