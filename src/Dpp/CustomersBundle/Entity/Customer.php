@@ -50,6 +50,13 @@ class Customer
     private $princingType;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="visitTimeInterval", type="integer")
+     */
+    private $visitTimeInterval;
+
+    /**
     * @ORM\OneToMany(targetEntity="Dpp\CustomersBundle\Entity\Product", mappedBy="customer")
     */
     private $products; 
@@ -127,7 +134,6 @@ class Customer
     public function setPrincingType($princingType)
     {
         $this->princingType = $princingType;
-
         return $this;
     }
 
@@ -140,7 +146,29 @@ class Customer
     {
         return $this->princingType;
     }
-    
+
+    /**
+     * Set visitTimeInterval
+     *
+     * @param integer $visitTimeInterval
+     * @return Customer
+     */
+    public function setVisitTimeInterval($visitTimeInterval)
+    {
+        $this->visitTimeInterval = $visitTimeInterval;
+        return $this;
+    }
+
+    /**
+     * Get visitTimeInterval
+     *
+     * @return integer 
+     */
+    public function getVisitTimeInterval()
+    {
+        return $this->visitTimeInterval;
+    }
+
     /**
     * Add, remove, and get Product collection
     */

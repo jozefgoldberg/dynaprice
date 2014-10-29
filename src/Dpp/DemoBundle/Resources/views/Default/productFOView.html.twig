@@ -1,4 +1,4 @@
-{# src\Dpp\DemoBundle\Resources\views\Default\productView.html.twig #}
+{# src\Dpp\DemoBundle\Resources\views\Default\productFOView.html.twig #}
 
 {% extends "DppDemoBundle::layout.html.twig" %}
 
@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block Dpp_body %}
+<script>
+    dpp_request('product','{{ product.urlRef }}');
+</script>
 <div class="row margeR0">
     <h3>
         Produit: {{product.customer.name}} / {{product.name}}

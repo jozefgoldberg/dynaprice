@@ -1,4 +1,42 @@
-﻿/*!
+﻿function dpp_request(action,urlRef) {
+    var xhr = getXMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+            dppReadResponse(action,xhr.responseXML); 
+        }
+    };
+    var httpAdr ="";
+    if(action == 'access') {httpAdr = dppHttpAdr + 'access/' + dppCliDomaine  + '/' + dppUid};
+    if(action == 'product') {httpAdr = dppHttpAdr + 'product/' + dppCliDomaine  + '/' + dppUid + '/' +urlRef};
+    xhr.open("GET",httpAdr,true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhr.send();
+}
+//
+function dppReadResponse(action,resp) {
+    $(function() {     
+        if  (resp.getElementsByTagName('visite').length > 0) {
+            var visites = resp.getElementsByTagName('visite')[0].firstChild.data;
+        if (action == 'access') {
+            var msg = "Bonjour, c'est votre : " + visites;
+            if (visites == 1) { 
+                msg = msg + "ére visite\n";
+            } else {
+                msg = msg + "éme visite\n";
+            }
+        } else {
+            var msg = "Bonjour, vous avez vu ce produit : " + visites + " fois \n";
+            if (resp.getElementsByTagName('code').length > 0 && 
+                !(resp.getElementsByTagName('code')[0].firstChild == null)) {
+                var code = resp.getElementsByTagName('code')[0].firstChild.data;
+                msg = msg + "Votre code promo est: " + code;
+            }
+        }
+        alert(msg);
+        }       
+    });
+}
+/*!
  * XML HTTP Requeqt script
  */
 function getXMLHttpRequest() {

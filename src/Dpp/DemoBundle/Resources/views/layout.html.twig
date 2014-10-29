@@ -1,18 +1,19 @@
 {# src/Dpp/DemoBundle/Resources/views/layout.html.twig #}
 
-{% extends "::layout.html.twig" %}
+{% extends "::demo.layout.html.twig" %}
 
 {% block title %}
   Dpp - {{ parent() }}
 {% endblock %}
-
+{% block master_navigation %}
+{% endblock %}
 
 {% block containt %}
     <div class="span2 spangris">
         Ici un texte d'explication
     </div>
     <div class="span10">
-            {% block DppDemo_body %}
+            {% block Dpp_body %}
             
             {% endblock %}
     </div>

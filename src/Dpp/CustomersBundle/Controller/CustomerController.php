@@ -18,7 +18,7 @@ class CustomerController extends Controller
     {
 	  $entityManager = $this->getDoctrine()->getManager();
       $customers = $entityManager->getRepository('DppCustomersBundle:Customer')->findAll();
-      return $this->render('DppCustomersBundle:Customer:customerList.html.twig',array('customers' => $customers));
+      return $this->render('DppCustomersBundle:Customers:customersList.html.twig',array('customers' => $customers));
     }
     public function createAction()
     {

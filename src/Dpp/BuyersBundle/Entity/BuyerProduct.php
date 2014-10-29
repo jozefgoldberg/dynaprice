@@ -3,6 +3,8 @@
 namespace Dpp\BuyersBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Dpp\CustomersBundle\Entity\Product;
+use Dpp\CustomersBundle\Entity\Customer;
 
 /**
  * BuyerProduct
@@ -32,13 +34,27 @@ class BuyerProduct
     * @ORM\JoinColumn(nullable=false)
     */
     private $product;
+    
     /**
      * @var integer
      *
      * @ORM\Column(name="status", type="integer")
      */
     private $status;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="firstAccess", type="datetime")
+     */
+    private $firstAccess;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="lastAccess", type="datetime")
+     */
+    private $lastAccess;
     /**
      * @var integer
      *
@@ -78,6 +94,51 @@ class BuyerProduct
     public function getStatus()
     {
         return $this->status;
+    }
+    /**
+     * Set firstAccess
+     *
+     * @param \DateTime $firstAccess
+     * @return BuyerProduct
+     */
+    public function setFirstAccess($firstAccess)
+    {
+        $this->firstAccess = $firstAccess;
+
+        return $this;
+    }
+
+    /**
+     * Get firstAccess
+     *
+     * @return \DateTime 
+     */
+    public function getFirstAccess()
+    {
+        return $this->firstAccess;
+    }
+
+    /**
+     * Set lastAccess
+     *
+     * @param \DateTime $lastAccess
+     * @return BuyerProduct
+     */
+    public function setLastAccess($lastAccess)
+    {
+        $this->lastAccess = $lastAccess;
+
+        return $this;
+    }
+
+    /**
+     * Get lastAccess
+     *
+     * @return \DateTime 
+     */
+    public function getLastAccess()
+    {
+        return $this->lastAccess;
     }
 
     /**
