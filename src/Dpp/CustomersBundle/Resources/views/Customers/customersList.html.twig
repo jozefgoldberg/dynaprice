@@ -15,7 +15,7 @@
             <tr>
                 <th class="span2">{{ 'Dpp.customer.name'|trans }}</th>
                 <th class="span2">{{ 'Dpp.customer.domaine'|trans }}</th>
-                <th class="span3">{{ 'Dpp.customer.princingType'|trans }}</th>
+                <th class="span1">{{ 'Dpp.customer.short.pricingType'|trans }}</th>
                 <th class="span1">Actions</th>
             </tr>
         </thead>   
@@ -39,7 +39,7 @@
     <div class="row">
         <div class="span5"> </div>
         <div class="span5">
-        <a href="{{ path('dpp_customers_customer_add') }}" class="grph-btn">{{ 'Dpp.customer.add_buton'|trans }}</a>
+        <a href="{{ path('dpp_customers_add') }}" class="grph-btn">{{ 'Dpp.customer.add_buton'|trans }}</a>
     </div>
 </div>  
 {% endblock %}

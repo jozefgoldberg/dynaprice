@@ -1,0 +1,28 @@
+{# src/Dpp/UsersBundle/Resources/views/Security/login.html.twig #}
+
+{% extends "DppUsersBundle::layout.html.twig" %}
+
+{% block Dpp_user_content %}
+<div class="row span12">
+  
+ {# Le formulaire, avec URL de soumission vers la route « login_check » comme on l'a vu #}
+    <form action="{{ path("fos_user_security_check") }}" method="post">
+        <div class="label-and-input">
+            <label  for="username">{{ 'Dpp.user.email'|trans }}:</label>
+            <input  type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+            <label  for="password">{{ 'Dpp.user.password'|trans }}</label>
+            <input  type="password" id="password" name="_password" required="required" />
+            <input  type="checkbox" id="remember_me" name="_remember_me" value="on" />
+            <label  for="remember_me">{{ 'Dpp.user.remember_me'|trans }}</label>         
+        </div>
+        <div class="label-and-input"> 
+            <label class="span2"></label>        
+            <input class="span2" type="submit" id="_submit" name="_submit" value="{{ 'Dpp.user.connect'|trans }}" />
+            <label class="span6">
+        <div>
+    </form>
+    {% if error %}
+    <div class="alert alert-error">{{ 'Dpp.user.bad_login'|trans }}</div>
+    {% endif %}
+ </div>
+{% endblock %}

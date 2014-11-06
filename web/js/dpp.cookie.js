@@ -3,7 +3,7 @@
 * generate UUID for cookie
 */
 var dppCookieName = "pmeweb.dpp.client";
-var dppHttpAdr ="http://localhost/dynaprice/web/app_dev.php/ajax/";
+var dppHttpAdr ="/dynaprice/web/ajax/";
 var dppCliDomaine = "oneclient.com";
 if ($.cookie(dppCookieName) == null) {
     var dppUid = uuid.v4();

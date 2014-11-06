@@ -1,0 +1,12 @@
+dpp_customers_homepage:
+    path:     /
+    defaults: { _controller: DppCustomersBundle:Customer:list }
+    
+dpp_customers_list:
+    path:     /
+    defaults: { _controller: DppCustomersBundle:Customer:list }
+  
+dpp_customers_add:
+    path:      /add
+    defaults:  { _controller: DppCustomersBundle:Customer:create}
+    

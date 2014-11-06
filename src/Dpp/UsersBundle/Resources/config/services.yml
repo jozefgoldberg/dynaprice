@@ -1,0 +1,8 @@
+# src\Dpp\UsersBundle\Ressource\config\services.yml
+
+services:
+    dpp_user.registration.form.type:
+        class:  Dpp\UsersBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:   
+            - {name: form.type, alias: Dpp_user_registration}

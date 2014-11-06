@@ -1,0 +1,7 @@
+dpp_products_homepage:
+    path:      /
+    defaults:  { _controller: DppCustomersBundle:Product:listAll}
+    
+dpp_products_customer:
+    path:      /{customerRef}
+    defaults:  { _controller: DppCustomersBundle:Product:listByCustomer}

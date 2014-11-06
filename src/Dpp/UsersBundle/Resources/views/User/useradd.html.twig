@@ -1,0 +1,12 @@
+{# src\Dpp\UsersBundle\Resources\views\User\useradd.html.twig #}
+
+{% extends "DppUsersBundle::layout.html.twig" %}
+
+{% block Dpp_user_content %}
+<div class="row span12">
+<h3> {{ 'Dpp.user.new_title'|trans }} </h3>
+<div class="label-and-input">
+	{% include "DppUsersBundle:User:userform.html.twig" %}
+</div>
+	
+{% endblock %}

@@ -1,0 +1,22 @@
+# src\Dpp\UserBundle\Resources\config\routing.yml
+
+Dpp_user_accueil:
+    path:      /
+    defaults:  { _controller: DppUsersBundle:User:index }
+    requirements: 
+     
+Dppuser_create:
+    path:      /create
+    defaults:  { _controller: DppUsersBundle:User:create }
+
+Dppuser_update:
+    path:      /update/{email}
+    defaults:  { _controller: DppUsersBundle:User:update }
+    requirements:
+        id:  \d+
+Dppuser_delete:
+    path:      /delete/{email}
+    defaults:  { _controller: DppUsersBundle:User:delete }
+    
+
+

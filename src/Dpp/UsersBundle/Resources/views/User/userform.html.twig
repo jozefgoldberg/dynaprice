@@ -1,0 +1,10 @@
+{# src/Dpp/UsersBundle/Resources/views/User/userform.html.twig #}
+
+ {% form_theme form 'DppUsersBundle:Default:fields.html.twig' %}
+ 
+<div class="well">
+    <form method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" class="btn btn-primary" />
+    </form>
+</div>

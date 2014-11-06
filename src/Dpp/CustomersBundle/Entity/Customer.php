@@ -55,6 +55,13 @@ class Customer
      * @ORM\Column(name="visitTimeInterval", type="integer")
      */
     private $visitTimeInterval;
+    
+     /**
+     * @var integer
+     *
+     * @ORM\Column(name="importType", type="integer")
+     */
+    private $importType;
 
     /**
     * @ORM\OneToMany(targetEntity="Dpp\CustomersBundle\Entity\Product", mappedBy="customer")
@@ -167,6 +174,28 @@ class Customer
     public function getVisitTimeInterval()
     {
         return $this->visitTimeInterval;
+    }
+    
+    /**
+     * Set importType
+     *
+     * @param integer $importType
+     * @return Customer
+     */
+    public function setImportType($importType)
+    {
+        $this->importType = $importType;
+        return $this;
+    }
+
+    /**
+     * Get importType
+     *
+     * @return integer 
+     */
+    public function getImportType()
+    {
+        return $this->importType;
     }
 
     /**

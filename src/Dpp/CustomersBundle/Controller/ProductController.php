@@ -17,17 +17,34 @@ class ProductController extends Controller
 {
     public function listAllAction()
     {
-	  $entityManager = $this->getDoctrine()->getManager();
-      $products = $entityManager->getRepository('DppCustomersBundle:Product')->findAll();
-      return $this->render('DppCustomersBundle:Products:productsListAll.html.twig',array('products' => $products));
+        $security = $this->get('security.context');
+        if (!$security->isGranted("ROLE_ADMIN")) {
+            $user = $security->getToken()->getUser();
+            $customerRef = $user->getCustomer()->getDomaine();
+            return $this->listByCustomerAction($customerRef);
+        }
+        
+        
+        $entityManager = $this->getDoctrine()->getManager();
+        $products = $entityManager->getRepository('DppCustomersBundle:Product')->findAll();
+        return $this->render('DppCustomersBundle:Products:productsListAll.html.twig',array('products' => $products));
     }
     
-    public function listAction(Customer $customer)
-    {
-	  $entityManager = $this->getDoctrine()->getManager();
-      $product = $entityManager->getRepository('DppCustomersBundle:Product')->findAll();
-      return $this->render('DppCustomersBundle:Customer:customerList.html.twig',array('customers' => $customers));
+    public function listByCustomerAction($customerRef)
+    {   
+        $entityManager = $this->getDoctrine()->getManager();
+        $customersList = $entityManager->getRepository('DppCustomersBundle:Customer')->findBy(array('domaine' => $customerRef));
+        if (!$customersList == null) {
+            $customer = $customersList[0];
+            $products = $entityManager->getRepository('DppCustomersBundle:Product')->findby(array('customer' => $customer));
+            return $this->render('DppCustomersBundle:Products:productsCustomerList.html.twig',array('products' => $products, 'customer'=> $customer));
+        }
+        return $this->render('DppCustomersBundle:Products:productsListAll.html.twig',array('products' => null));
+    
     }
+    
+    
+    
     public function createAction(Customer $customer)
     {
 		$customer = new Customer(); // Création de l'entité

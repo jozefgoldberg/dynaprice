@@ -31,10 +31,9 @@ class CustomerController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($customer);
                 $em->flush();
-                $this->get('session')->getFlashBag()->add('info', 'Client enregistré');
                 return $this->redirect( $this->generateUrl('dpp_customers_list') );
             } 
         }
-        return $this->render('DppCustomersBundle:Customer:customeradd.html.twig', array('form' => $form->createView()));
+        return $this->render('DppCustomersBundle:Customers:customeradd.html.twig', array('form' => $form->createView()));
     }
 }
