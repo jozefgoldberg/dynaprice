@@ -1,8 +1,8 @@
-<?php
+<?php  
 // src\Dpp\AjaxServeurBundle\Controller\AjaxServeurController.php
 
 namespace Dpp\AjaxServeurBundle\Controller;
-
+header("Access-Control-Allow-Origin: *");
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\DateTime;

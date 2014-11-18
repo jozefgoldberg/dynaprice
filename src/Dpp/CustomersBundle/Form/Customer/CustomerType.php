@@ -15,10 +15,12 @@ class CustomerType extends AbstractType
             ->add('domaine','text',array('label' => 'Dpp.customer.domaine'))
             ->add('princingType','text',array('label' => 'Dpp.customer.pricingType','required' => false))
             ->add('visitTimeInterval','integer',array('label' => 'Dpp.customer.visitTimeInterval'))
+            ->add('promoCodes','hidden',array('required' => false,'read_only' => false))
             ->add('importType','choice',array('label' => 'Dpp.customer.importType','choices' => array (
-                                                                                                    0 => 'Saisie manuelle',
-                                                                                                    1 => 'Import manuel',
-                                                                                                    2 =>  'Import automatique')
+                                                                                                    0 => 'Pas de saisie',
+                                                                                                    1 => 'Saisie manuelle',
+                                                                                                    2 => 'Import manuel',
+                                                                                                    3 =>  'Import automatique')
                                                                                                 ))
         ;
     }

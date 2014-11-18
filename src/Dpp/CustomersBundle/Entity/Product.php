@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table()
  * @ORM\Table(name="dpp_product")
  * @ORM\Entity(repositoryClass="Dpp\CustomersBundle\Entity\ProductRepository")
- * @UniqueEntity("urlref")
+ * @UniqueEntity("urlRef")
  */
 class Product
 {
@@ -52,6 +52,14 @@ class Product
      * @ORM\Column(name="pricingType", type="integer")
      */
     private $pricingType;
+
+    /**
+     * @var longtext
+     *
+     * @ORM\Column(name="promoCodes", type="text", nullable=true)
+     */
+    
+    private $promoCodes;
 
 
     /**
@@ -154,5 +162,37 @@ class Product
     public function getPricingType()
     {
         return $this->pricingType;
+    }
+        /**
+     * Set promoCodes
+     *
+     * @param longtext $promoCodes
+     * @return Customer
+     */
+    public function setPromoCodes($promoCodes)
+    {
+        $this->promoCodes = $promoCodes;
+        return $this;
+    }
+
+    /**
+     * Get promoCodes
+     *
+     * @return longtext 
+     */
+    public function getPromoCodes()
+    {
+        return $this->promoCodes;
+    }
+    
+    /**
+    * Get Customer name
+    * return string
+    **/
+    public function getCustomerName() {
+        if ($this->getCustomer() == null) {
+            return null;
+        }
+        return $this->getCustomer()->getName();
     }
 }

@@ -1,0 +1,15 @@
+﻿{# src/Dpp/CustomersBundle/Resources/views/Customer/customerCreateForm.html.twig #}
+
+ {% form_theme form 'DppCustomersBundle:Default:fields.html.twig' %}
+<div class="well">
+    <form method="post"  {{ form_enctype(form) }}>
+        {{ form_widget(form) }} 
+        
+        <div class="row span2"> 
+            <a href=" {{ returnUrl }} " class="btn "><i class="icon-chevron-left"></i>Cancel</a>        
+        </div>
+        <div class="row span1"> 
+            <input type="submit" class="btn pull-right btn-primary"  />      
+        </div>
+    </form>
+</div>

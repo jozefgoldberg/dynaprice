@@ -26,8 +26,8 @@
             <td>{{ customer.domaine }}</td>
             <td>{{ customer.princingType }}</td>
             <td>
-                <a href="#">delete</a>
-                <a href="#">edit</a>
+                <a href="{{ path('dpp_customers_delete', {'customerRef': customer.domaine }) }}" onclick="return(confirm('{{ "Dpp.global.confirm_delete"|trans}}' ))" >delete</a>
+                <a href="{{ path('dpp_customers_update', {'customerRef': customer.domaine }) }}" >edit</a>
             </td>
         </tr>
         {% endfor %}
@@ -39,7 +39,7 @@
     <div class="row">
         <div class="span5"> </div>
         <div class="span5">
-        <a href="{{ path('dpp_customers_add') }}" class="grph-btn">{{ 'Dpp.customer.add_buton'|trans }}</a>
+        <a href="{{ path('dpp_customers_add') }}" class="btn">{{ 'Dpp.customer.add_buton'|trans }}</a>
     </div>
 </div>  
 {% endblock %}

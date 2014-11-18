@@ -1,0 +1,76 @@
+﻿{# src/Dpp/CustomersBundle/Resources/views/Customer/customerUpdateForm.html.twig #}
+
+ {% form_theme form 'DppCustomersBundle:Default:fields.html.twig' %}
+<script>
+function ajouterLigne()
+{
+    if ($('#visites').val() && $('#code').val() && $('#message').val() ) {
+        var ligne = '<tr><td>'+$('#visites').val()+'</td><td>'+$('#code').val()+'</td><td>'+$('#message').val()+'</td></tr>';
+        var tabligne ='['+$('#visites').val()+',"'+ $('#code').val()+'","'+ $('#message').val()+'"]';
+        $('#tableau tr:last').after(ligne);
+        var zin = $('#dpp_customersbundle_customers_customertype_promoCodes');
+        if (zin.val()) {
+            zin.val(zin.val()+','+tabligne);
+        } else {
+            zin.val(zin.val()+tabligne);
+        }
+    }
+    $('#visites').val('');
+    $('#code').val('');
+    $('#message').val('');
+}
+function DppComputeTabCode() // sur onSubmit
+{   
+    var zin = $('#dpp_customersbundle_customers_customertype_promoCodes');
+    if (zin.val()) {
+        zin.val('['+zin.val()+']');
+    } 
+    return true;
+}
+</script>
+<div class="well">
+    <form method="post"  Onsubmit="return DppComputeTabCode()"   {{ form_enctype(form) }}>
+        {{ form_widget(form) }} 
+        
+        <b>Table des codes promo</b>
+        <table>
+        <tr><td><label class="labelform span2">Nb des visites</label><input type="number" name="visites" id="visites" /></td></tr>
+        <tr><td><label class="labelform span2">Code promo</label><input type="text" name="code" id="code" /></td></tr>
+        <tr><td><label class="labelform span2">Message</label><input type="text"  name="message" id="message" /></td>
+            <td>&nbsp&nbsp<input type="button" class="btn " onclick="ajouterLigne();" value="Ajouter un code"/></td>
+        </tr>
+        </table><br>
+        <div class="span6">
+            <table id="tableau" border="1">
+                <thead>
+                    <tr>
+                        <th class="span2">Nb Visite</th>
+                        <th class="span2">Code</th>
+                        <th class="span2">Texte</th>
+                    </tr>
+                </thead>
+                <tbody>
+        {% if tabPromoCodes %}
+            {% for ligCode in tabPromoCodes %}
+                <tr>
+                    <td>{{ ligCode[0] }}</td>
+                    <td>{{ ligCode[1] }}</td>
+                    <td>{{ ligCode[2] }}</td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="row span10"><br></div>
+        <div class="row span2"> 
+            <a href=" {{ returnUrl }} " class="btn "><i class="icon-chevron-left"></i>Cancel</a>        
+        </div>
+        <div class="row span1"> 
+            <input type="submit" class="btn pull-right btn-primary"  />      
+        </div>
+        <div class="row span2"> 
+            <a href=" {{ listProdUrl }} " class="btn pull-right">{{ 'Dpp.product.liste'|trans }}<i class="icon-chevron-right"></i></a>         
+        </div>
+    </form>
+</div>

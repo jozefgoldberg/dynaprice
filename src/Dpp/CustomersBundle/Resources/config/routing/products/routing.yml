@@ -1,7 +1,15 @@
-dpp_products_homepage:
-    path:      /
-    defaults:  { _controller: DppCustomersBundle:Product:listAll}
-    
 dpp_products_customer:
     path:      /{customerRef}
     defaults:  { _controller: DppCustomersBundle:Product:listByCustomer}
+
+dpp_product_add:
+    path:      /add/{customerRef}
+    defaults:  { _controller: DppCustomersBundle:Product:create}
+
+dpp_product_edit:
+    path:      /update/{id}
+    defaults:  { _controller: DppCustomersBundle:Product:update}
+    
+dpp_product_delete:
+    path:      /delete/{id}
+    defaults:  { _controller: DppCustomersBundle:Product:delete}

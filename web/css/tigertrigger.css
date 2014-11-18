@@ -1,0 +1,116 @@
+/*!
+ * Pmeweb - complement css
+ * 
+ */
+
+.well {
+    background-color: inherit;
+    border: none;
+}
+.margeR0 {
+    margin-left: 0px;
+}
+.table {
+  background-color: #eeeeee;
+}
+.spangris {
+    background-color: #eeeeee;
+}
+.boite {
+    padding-left:5px;
+    background-color: #eeeeee;
+    border-top-style:ridge;
+    border-top-width:1px;
+    border-top-color: #aaaaaa;
+    border-left-style:ridge;
+    border-left-width:1px;
+    border-left-color: #aaaaaa;
+    border-right-style:ridge;
+    border-right-width:1px;
+    border-right-color: #000000;
+    border-bottom-style:ridge;
+    border-bottom-width:1px;
+    border-bottom-color: #000000;
+    
+}
+th,
+td {
+    margin: 5px;
+}
+td {
+    font-weight: normal;
+}
+footer {
+    margin-top: 30px;
+}
+.container {
+	/* background-color : #D9EFF5; */
+    color : #FFFFFF;
+    background-color : #000000;
+}
+#header{
+    height: 140px;
+    border-bottom-style:ridge;
+    border-bottom-width:1px;
+    border-bottom-color: green;
+    background-color : #FFAA00;
+}
+.hero-unit {
+  padding: 20px;
+}
+.txtjaune {
+    color:  #FFAA00;
+}
+#name-and-slogan {
+  padding-top: 5px;
+  margin: 0 0 30px 15px; /* LTR */
+}
+#site-name {
+  font-size: 1.821em;
+  color: #686868;
+  line-height: 1;
+  margin-left: 17px;
+}
+#site-slogan {
+  font-size: 0.929em;
+  margin-top: 4px;
+  margin-left: 17px;
+  word-spacing: 0.1em;
+  font-style: italic;
+}
+.labelform {
+    padding-top: 5px;
+    margin-left:10px;
+    display: inline-block;
+}
+.label-and-input {
+  padding-top: 5px;
+  border: none;
+}
+.label-and-input label {
+  display: inline-block;
+}
+.pmeweb-float-pad {
+    float: right;
+    padding-top: 5px;
+}
+.pmeweb-msg {
+    float: left;
+    color: red;
+    font-style: italic;
+}
+.connection {
+  margin-top: -15px;
+  font-size: 12px;
+  font-weight: normal;
+}
+.navigation-bar {
+    margin-top: 18px;
+    padding: 0px;
+    width: 100%;
+    *background-color: #A8A8A8;
+}
+.a-neutre {
+    color: inherit; 
+    text-decoration: none;
+}

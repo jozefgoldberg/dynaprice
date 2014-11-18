@@ -1,0 +1,12 @@
+{# src\Dpp\CustomersBundle\Resources\views\Customers\customerUpdate.html.twig #}
+
+{% extends "DppCustomersBundle::layout.html.twig" %}
+
+{% block Dpp_body %}
+<div class="row span10">
+<h3> {{ 'Dpp.customer.update'|trans }} </h3>
+<div class="label-and-input">
+	{% include "DppCustomersBundle:Customers:customerUpdateForm.html.twig" %}
+</div>
+	
+{% endblock %}

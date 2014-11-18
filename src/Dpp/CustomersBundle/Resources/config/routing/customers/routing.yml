@@ -9,4 +9,12 @@ dpp_customers_list:
 dpp_customers_add:
     path:      /add
     defaults:  { _controller: DppCustomersBundle:Customer:create}
+
+dpp_customers_update:
+    path:      /update/{customerRef}
+    defaults:  { _controller: DppCustomersBundle:Customer:update}
+
+dpp_customers_delete:
+    path:      /delete/{customerRef}
+    defaults:  { _controller: DppCustomersBundle:Customer:delete}
     

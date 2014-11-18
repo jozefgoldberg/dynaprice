@@ -62,6 +62,13 @@ class Customer
      * @ORM\Column(name="importType", type="integer")
      */
     private $importType;
+    
+     /**
+     * @var longtext
+     *
+     * @ORM\Column(name="promoCodes", type="text", nullable=true)
+     */
+    private $promoCodes;
 
     /**
     * @ORM\OneToMany(targetEntity="Dpp\CustomersBundle\Entity\Product", mappedBy="customer")
@@ -196,6 +203,28 @@ class Customer
     public function getImportType()
     {
         return $this->importType;
+    }
+    
+    /**
+     * Set promoCodes
+     *
+     * @param longtext $promoCodes
+     * @return Customer
+     */
+    public function setPromoCodes($promoCodes)
+    {
+        $this->promoCodes = $promoCodes;
+        return $this;
+    }
+
+    /**
+     * Get promoCodes
+     *
+     * @return longtext 
+     */
+    public function getPromoCodes()
+    {
+        return $this->promoCodes;
     }
 
     /**
