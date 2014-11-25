@@ -2,7 +2,6 @@
 // src\Dpp\AjaxServeurBundle\Controller\AjaxServeurController.php
 
 namespace Dpp\AjaxServeurBundle\Controller;
-header("Access-Control-Allow-Origin: *");
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -14,7 +13,12 @@ use Dpp\CustomersBundle\Entity\Product;
 
 class AjaxServeurController extends Controller
 {
-    
+
+    public function getResponse($msg) {
+        $response = new Response($msg,200,array('content-type' => 'text/xml'));
+        $response->headers->set('Access-Control-Allow-Origin','*');
+        return $response;       
+    }
     
     
     /**
@@ -35,7 +39,7 @@ class AjaxServeurController extends Controller
         if ($msg == null) { 
             $msg = '<resp></resp>';
         }
-        return new Response($msg,200,array('content-type' => 'text/xml'));
+        return $this->getResponse($msg);   
     }
     
     /**
@@ -65,7 +69,7 @@ class AjaxServeurController extends Controller
         if ($msg == null) { 
             $msg = '<resp></resp>';
         }
-        return new Response($msg,200,array('content-type' => 'text/xml'));
+        return $this->getResponse($msg);   
     }
     
     /**
