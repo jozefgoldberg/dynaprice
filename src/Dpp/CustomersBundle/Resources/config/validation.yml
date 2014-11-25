@@ -1,0 +1,5 @@
+# src/Dpp/CustomersBundle/Resources/config/validation.yml
+Dpp\CustomersBundle\Entity\Customer:
+    constraints:
+        - Callback: [validate]
+        

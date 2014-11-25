@@ -21,23 +21,8 @@ function dpp_request(action,urlRef) {
 //
 function dppReadResponse(action,resp) {
     jd(function() {     
-        if  (resp.getElementsByTagName('visite').length > 0) {
-            var visites = resp.getElementsByTagName('visite')[0].firstChild.data;
-        if (action == 'access') {
-            var msg = "Bonjour, c'est votre : " + visites;
-            if (visites == 1) { 
-                msg = msg + "ére visite\n";
-            } else {
-                msg = msg + "éme visite\n";
-            }
-        } else {
-            var msg = "Bonjour, vous avez vu ce produit : " + visites + " fois \n";
-            if (resp.getElementsByTagName('code').length > 0 && 
-                !(resp.getElementsByTagName('code')[0].firstChild == null)) {
-                var code = resp.getElementsByTagName('code')[0].firstChild.data;
-                msg = msg + "Votre code promo est: " + code;
-            }
-        }
+        if  (resp.getElementsByTagName('msg').length > 0) {
+            var msg = resp.getElementsByTagName('msg')[0].firstChild.data;
         alert(msg);
         }       
     });

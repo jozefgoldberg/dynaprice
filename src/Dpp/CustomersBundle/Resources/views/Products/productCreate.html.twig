@@ -3,10 +3,9 @@
 {% extends "DppCustomersBundle::layout.html.twig" %}
 
 {% block Dpp_body %}
-<div class="row span10">
 <h3> {{ 'Dpp.product.add'|trans }} </h3>
 <div class="label-and-input">
-	{% include "DppCustomersBundle:Products:productCreateForm.html.twig" %}
-</div>
+	{% include "DppCustomersBundle:Products:productForm.html.twig" %}
+</div><br><br><br>
 	
 {% endblock %}

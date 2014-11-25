@@ -14,8 +14,7 @@ use Dpp\CustomersBundle\Entity\Product;
 
 class AjaxServeurController extends Controller
 {
-    
-    
+     
     
     /**
     * Visit Buyer from one customer Ajax
@@ -27,15 +26,30 @@ class AjaxServeurController extends Controller
             $buyerCustomer= $this->getBuyerCustomer($customer, $buyer);// get buyerCustomer or creat it if no exist
             $visites = $buyerCustomer->getTotalAccess();
             $tabPromo = $customer->getPromoCodesAsArray();
-            $msg = null;
-            if ($customer->isGlobalPromo() && (!$tabPromo === FALSE)) { 
-                $msg = $this->getPromoMessage($customer, $tabPromo, $customer->getPricingType(), $visites);
+            if ($customer->isGlobalPromo() && (!$tabPromo === FALSE)) {               
+                foreach(array_reverse($tabPromo) as $ligneCode) {
+                    var_dump($ligneCode);
+                    if ($customer->getPricingType() == 1) {
+                        if ($ligneCode[0] = $vistit) {
+                            $codePromo = $ligneCode[1];
+                            $msg = $ligneCode[2];
+                            break;
+                        }
+                    } else {
+                        if ($ligneCode[0] <= $vistit) {
+                            $codePromo = $ligneCode[1];
+                            $msg = $ligneCode[2];
+                            break;
+                        }
+                    }
+                }
             }
+            $code = "" ;
+            $msg = '<resp><visite>'.$visites.'</visite><code>'.$code.'</code></resp>';    
+        } else { 
+            $msg = '<resp>no exist></resp>';
         }
-        if ($msg == null) { 
-            $msg = '<resp></resp>';
-        }
-        return new Response($msg,200,array('content-type' => 'text/xml'));
+            return new Response($msg,200,array('content-type' => 'text/xml'));
     }
     
     /**
@@ -43,29 +57,21 @@ class AjaxServeurController extends Controller
     */    
     public function accessProductAction($domaine, $uuid, $prodRef) {
         $customer = $this->getCustomerByDomaine($domaine); 
-        if (!$customer == null) {       
-            $product =  $this->getProductByReference($customer, $prodRef); 
-            $msg = null;
-            if (!$product == null && $product->getState() > 0) {  
-                $buyer = $this->getBuyerByUid($uuid);  // get buyer or creat it if no exist
-                $buyerCustomer = $this->getBuyerCustomer($customer, $buyer);// get buyerCustomer or creat it if no exist            
-                $buyerProduct = $this->getBuyerProduct($buyer, $product);// get buyerProduct or creat it if no exist
-                $visites = $buyerProduct->getTotalAccess();
-                $pricingType = 0;
-                if ($product->getPricingType() == 0) {
-                    $pricingType = $customer->getPricingType();
-                }
-                $tabPromo = $product->getPromoCodesAsArray();
-                if ($tabPromo === FALSE) {
-                    $tabPromo = $customer->getPromoCodesAsArray();
-                }
-                $msg = $this->getPromoMessage($customer, $tabPromo, $pricingType, $visites);
-            }
+        $product =  $this->getProductByReference($prodRef); 
+        if ((!$customer == null) && (!$product == null) && ($product->getCustomer()->getId() == $customer->getId())) {  
+            $buyer = $this->getBuyerByUid($uuid);  // get buyer or creat it if no exist
+            $buyerCustomer = $this->getBuyerCustomer($customer, $buyer);// get buyerCustomer or creat it if no exist            
+            $buyerProduct = $this->getBuyerProduct($buyer, $product);// get buyerProduct or creat it if no exist
+            $visites = $buyerProduct->getTotalAccess();
+            $code = "" ;
+            if ($visites > 2) {$code = 'HM3A';}
+            if ($visites > 3) {$code = 'HM6A';}
+            if ($visites > 8) {$code = 'HM9A';}
+            $msg = '<resp><visite>'.$visites.'</visite><code>'.$code.'</code></resp>';    
+        } else { 
+            $msg = '<resp>no exist></resp>';
         }
-        if ($msg == null) { 
-            $msg = '<resp></resp>';
-        }
-        return new Response($msg,200,array('content-type' => 'text/xml'));
+            return new Response($msg,200,array('content-type' => 'text/xml'));
     }
     
     /**
@@ -83,17 +89,13 @@ class AjaxServeurController extends Controller
     
     /**
     * Get product by reference
-    * if not existe and customer is autoAcquisition create is
     */ 
-    private function getProductByReference(Customer $customer,  $prodRef) {
+    private function getProductByReference($prodRef) {
         $entityManager = $this->getDoctrine()->getManager();
-        $product = $entityManager->getRepository('DppCustomersBundle:Product')->findOneBy(array('customer'=>$customer, 'urlRef' => $prodRef));
-        if ($product == null) {
-            if ($customer->isAutoAcquisition()) {       
-                $product = Product::create($customer,  $prodRef);
-                $entityManager->persist($product);
-                $entityManager->flush();
-            } 
+        $product = null;
+        $productList = $entityManager->getRepository('DppCustomersBundle:Product')->findBy(array('urlRef' => $prodRef));
+        if (!$productList == null) {
+            $product = $productList[0];
         }
         return $product;
     }   
@@ -137,8 +139,7 @@ class AjaxServeurController extends Controller
             $entityManager->persist($bc);
         } else {
             $bc = $bcList[0];
-            $ts = $date->getTimestamp() - $bc->getLastAccess()->getTimestamp();  
-            $ts = $ts / 3600; // en heures            
+            $ts = $date->getTimestamp() - $bc->getLastAccess()->getTimestamp();            
             if ($ts > $customer->getVisitTimeInterval() ) {
                 $bc->setTotalAccess($bc->getTotalAccess()+1);
                 $bc->setLastAccess($date);
@@ -166,8 +167,7 @@ class AjaxServeurController extends Controller
             $entityManager->persist($bp);
         } else {
             $bp = $bpList[0];
-            $ts = $date->getTimestamp() - $bp->getLastAccess()->getTimestamp();     
-            $ts = $ts / 3600; // en heures
+            $ts = $date->getTimestamp() - $bp->getLastAccess()->getTimestamp();            
             if ($ts > $product->getCustomer()->getVisitTimeInterval() ) {
                 $bp->setTotalAccess($bp->getTotalAccess()+1);
                 $bp->setLastAccess($date);
@@ -177,43 +177,7 @@ class AjaxServeurController extends Controller
         return $bp;
     }   
        
-    public function getPromoMessage($customer, $tabPromo, $pricingType, $visites) {
-        $msg = null;
-        $codePromo = null;
-        foreach(array_reverse($tabPromo) as $ligneCode) {
-            if ($pricingType == 1) {
-                if ($ligneCode[0] == $visites) {
-                    $codePromo = $ligneCode[1];
-                    $msg = $ligneCode[2];
-                    break;
-                }
-            } else {
-                if ($ligneCode[0] <= $visites) {
-                    $codePromo = $ligneCode[1];
-                    $msg = $ligneCode[2];
-                    break;
-                }
-            }
-        }
-        if (!$codePromo == null) {
-            if ($msg == null) {
-                $msg = $customer->getDefaultMsg();
-            }                
-            $pos = strpos($msg,'[$visite$]');
-            if (!$pos===FALSE) {
-                $repstr = strval($visites);
-                if ($visites > 1){
-                    $repstr = $repstr+'éme ';
-                }else { 
-                    $repstr = $repstr+'ére ';
-                }
-                $msg = str_replace('[$visite$]',$repstr,$msg);
-            }
-            $msg = str_replace('[$code$]',$codePromo,$msg);
-            $msg = '<resp><msg>'.$msg.'</msg></resp>';                     
-        }
-        return $msg;
-    }
+    
     
     
     

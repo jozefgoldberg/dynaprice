@@ -59,9 +59,10 @@ class CustomerController extends Controller
         if ($request->getMethod() == 'POST') { // après la validation user
             $form->bind($request); // on remplis le $form
             if ($form->isValid()) {     
-                
+                var_dump($customer->getPromoCodes());
                 if (!$customer->getPromoCodes() == null) {
                     $tabPromoCodes = json_decode($customer->getPromoCodes());
+                    var_dump($tabPromoCodes);
                     usort($tabPromoCodes, array($this, 'UcompCode'));
                     $customer->setPromoCodes(json_encode($tabPromoCodes));
                 }

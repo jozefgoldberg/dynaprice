@@ -10,16 +10,19 @@
 <script>
     dpp_request('access','*');
 </script>
-<div class="row span10">
-<h3>{{ 'Dpp.product.liste'|trans }}</h3>
+<script>
+    dpp_request('product','ttest.html');
+</script>
+<div class="row span12">
+<h3>{{ 'Dpp.product.liste'|trans }} </h3>: 
 {% if products %}
     <table class="table-bordered">
         <thead>
             <tr>
-                <th class="span2">{{ 'Dpp.product.customer.name'|trans }}</th>
-                <th class="span2">{{ 'Dpp.product.name'|trans }}</th>
-                <th class="span2">{{ 'Dpp.product.reference'|trans }}</th>
-                <th class="span2">{{ 'Dpp.product.pricingType'|trans }}</th>
+                <th class="span2">{{ 'Dpp.product.customer'|trans }}</th>
+                <th class="span3">{{ 'Dpp.product.name'|trans }}</th>
+                <th class="span3">{{ 'Dpp.product.urlRef'|trans }}</th>
+
             </tr>
         </thead>   
         <tbody>
@@ -27,21 +30,18 @@
         {% for product in products %}
         
         <tr>
-            <td>{{ product.name }}</td>
+            <td>{{ product.customer.name }}</td>
             <td><a href="{{ path('dpp_demo_view', {'reference': product.urlRef}) }}">{{ product.name }}</a></td>
             <td><a href="{{ path('dpp_demo_view', {'reference': product.urlRef}) }}">{{ product.urlRef }}</a</td>
-            <td>{{ product.pricingType }}</td>
         </tr>
         
         {% endfor %}
         </tbody>
     </table>
-
 {% else %}
     {{ 'Dpp.product.notfound'|trans }}
 {% endif %}
-    <div class="row">
-    </div>
+    <div class="row"><br><br></div>
 </div>  
 {% endblock %}
   

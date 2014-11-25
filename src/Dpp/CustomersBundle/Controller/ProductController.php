@@ -53,21 +53,23 @@ class ProductController extends Controller
         if ($customer == null) {
             return listAllAction();
         }
-        $product = new Product(); // Cr�ation de l'entit�
+        $product = new Product(); // Création de l'entité
         $product->setCustomer($customer);
         $form = $this->createForm(new ProductType, $product);        
         $request = $this->get('request');
-        if ($request->getMethod() == 'POST') { // apr�s la validation user
+        if ($request->getMethod() == 'POST') { // aprés la validation user
             $form->bind($request); // on remplis le $form
             if ($form->isValid()) {                       
                 $entityManager->persist($product);
                 $entityManager->flush();
-                return $this->redirect( $this->generateUrl('dpp_product_edit', array('id'=>$product->getId())));
+                $this->get('session')->getFlashBag()->add('info', 'Produit enregistré');
+                return $this->redirect( $this->generateUrl('dpp_product_add', array('customerRef'=>$customerRef)));
             } 
         }
         $returnUrl = $this->generateUrl('dpp_products_customer', array('customerRef' => $customer->getDomaine() ));
         return $this->render('DppCustomersBundle:Products:productCreate.html.twig', array('form' => $form->createView(),
-                                                                                        'returnUrl' => $returnUrl));
+                                                                                        'returnUrl' => $returnUrl,
+                                                                                        'tabPromoCodes' => null));
     }
     
     public function updateAction($id)
@@ -83,7 +85,7 @@ class ProductController extends Controller
         }
         $form = $this->createForm(new ProductType, $product);        
         $request = $this->get('request');
-        if ($request->getMethod() == 'POST') { // apr�s la validation user
+        if ($request->getMethod() == 'POST') { // aprés la validation user
             $form->bind($request); // on remplis le $form
             if ($form->isValid()) {   
                 if (!$product->getPromoCodes() == null) {
@@ -93,7 +95,7 @@ class ProductController extends Controller
                 }                  
                 $entityManager->persist($product);
                 $entityManager->flush();
-                return $this->listByCustomer($customer);
+                return $this->listByCustomer($product->getCustomer());
             } 
         }
         $returnUrl = $this->generateUrl('dpp_products_customer', array('customerRef' => $product->getCustomer()->getDomaine() ));
@@ -112,6 +114,7 @@ class ProductController extends Controller
         $customer = $product->getCustomer();       
         $entityManager->remove($product);
         $entityManager->flush();
+        $this->get('session')->getFlashBag()->add('info', 'Produit supprimé');
         return $this->listByCustomer($customer);
     }
     
@@ -123,5 +126,18 @@ class ProductController extends Controller
         } else {
             return 1;
         }
+    }
+    
+    public static function create(Customer $customer, $urlRef) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $product = new Product(); // Création de l'entité
+        $product->setCustomer($customer);
+        $product->setUrlRef($urlRef);
+        $product->setPricingType(0);
+        $product->setName($urlRef);
+        $product->setState(1);
+        $entityManager->persist($product);
+        $entityManager->flush();
+        return $product; 
     }
 }

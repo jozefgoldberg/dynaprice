@@ -1,17 +1,31 @@
-﻿{# src/Dpp/CustomersBundle/Resources/views/Customer/customerUpdateForm.html.twig #}
-
+{# src/Dpp/CustomersBundle/Resources/views/Products/productForm.html.twig #}
  {% form_theme form 'DppCustomersBundle:Default:fields.html.twig' %}
+ 
 <script type="text/javascript" src="{{ asset('js/dppTabPromo.js') }}"></script>
-    <div class="row">
-        <form method="post"  Onsubmit="return DppComputeTabCode($('#dpp_customersbundle_customers_customertype_promoCodes'))"   {{ form_enctype(form) }}>
-        <div class="txtred">{{ form_errors(form) }}{{ form_errors(form.importType) }}{{ form_errors(form.defaultMsg) }}</div>
+
+{% for flashMessage in app.session.flashbag.get('info') %}
+    <div class="txtjaune">{{ flashMessage }}</div>
+{% endfor %} 
+<div class="txtred">{{ form_errors(form.urlRef) }}</div>
+<div class="row">
+        <form method="post"  Onsubmit="return DppComputeTabCode($('#dpp_customersbundle_product_producttype_promoCodes'))"   {{ form_enctype(form) }}>
+          <div class="txtred">{{ form_errors(form) }}</div>
+            <div class="row">
+                <div class="span1"></div>
+                <div class="span5">
+                    {{ form_row(form.customerName) }} 
+                </div>
+                <div class="span5">
+                    
+                </div>
+            </div>
             <div class="row">
                 <div class="span1"></div>
                 <div class="span5">
                     {{ form_row(form.name) }} 
                 </div>
                 <div class="span5">
-                    {{ form_row(form.domaine) }} 
+                    {{ form_label(form.urlRef) }} {{ form_widget(form.urlRef) }}  
                 </div>
             </div>
             <div class="row">
@@ -20,32 +34,14 @@
                     {{ form_row(form.pricingType) }} 
                 </div>
                 <div class="span5">
-                    {{ form_row(form.visitTimeInterval) }} 
+                    {{ form_row(form.state) }} 
                 </div>
             </div>
-            <div class="row">
-                <div class="span1"></div>
-                <div class="span5">
-                    {{ form_label(form.importType) }} {{ form_widget(form.importType) }} 
-                </div>
-                <div class="span5">
-                    {{ form_label(form.defaultMsg) }} {{ form_widget(form.defaultMsg) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="span1"></div>
-                <div class="span5">
-                    {{ form_row(form.autoAcquisition) }} 
-                </div>
-                <div class="span5">
-                    {{ form_row(form.globalPromo) }} 
-                </div>
-            </div>
-                {{ form_rest(form) }}
+            {{ form_rest(form) }}
             <div class="row">
                 <div class="span2"></div>
                 <div class="span5">
-                    <H4>Table des codes promo</H4>
+                    <H4>{{ "Dpp.global.promoCodes"|trans }}</H4>
                 </div>    
             </div>
             <div class="row">
@@ -59,7 +55,7 @@
                 <div class="span2"><input type="number" name="visites" id="visites" /></div>
                 <div class="span2"><input type="text" name="code" id="code" /></div>
                 <div class="span3"><input type="text"  size="64" name="message" id="message" /></div>
-                <div class="span3"><input type="button" class="btn " onclick="DppAddRow($('#dpp_customersbundle_customers_customertype_promoCodes'));" value="Ajouter un code"/></div>
+                <div class="span3"><input type="button" class="btn " onclick="DppAddRow($('#dpp_customersbundle_product_producttype_promoCodes'));" value="Ajouter un code"/></div>
             </div>
             <div class="row">
                 <div class="span2">&nbsp</div>
@@ -74,16 +70,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                {% if tabPromoCodes %}
-                    {% for ligCode in tabPromoCodes %}
-                        <tr>
-                            <td>{{ ligCode[0] }}</td>
-                            <td>{{ ligCode[1] }}</td>
-                            <td>{{ ligCode[2] }}</td>
-                            <td><a href"#"  onclick="DppDeleteRow(this);"><img src="/dynaprice/web/img/delete_obj.gif"></a></td>
-                        </tr>
-                    {% endfor %}
-                {% endif %}
+                            {% if tabPromoCodes %}
+                                {% for ligCode in tabPromoCodes %}
+                                    <tr>
+                                        <td>{{ ligCode[0] }}</td>
+                                        <td>{{ ligCode[1] }}</td>
+                                        <td>{{ ligCode[2] }}</td>
+                                        <td><a href"#"  onclick="DppDeleteRow(this);"><img src="/dynaprice/web/img/delete_obj.gif"></a></td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
                         </tbody>
                     </table><br><br>
                 </div>
@@ -93,12 +89,9 @@
                 <div class="span2"> 
                     <a href=" {{ returnUrl }} " class="btn "><i class="icon-chevron-left"></i>Cancel</a>        
                 </div>
-                <div class="row span1"> 
-                    <input type="submit" class="btn pull-right btn-primary"  />      
+                <div class="span2"> 
+                    <input type="submit" class="btn btn-primary" />
                 </div>
-                <div class="row span2"> 
-                    <a href=" {{ listProdUrl }} " class="btn pull-right">{{ 'Dpp.product.liste'|trans }}<i class="icon-chevron-right"></i></a>         
-                </div>
-            </div>   
+            </div>
         </form>
     </div>

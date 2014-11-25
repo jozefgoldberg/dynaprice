@@ -4,18 +4,20 @@ namespace Dpp\CustomersBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface as Context;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Dpp\CustomersBundle\Controller\AllTypeController;
+use Dpp\AjaxServeurBundle\Entity\PromoCodeInterface;
 /**
  * Product
  *
  * @ORM\Table()
  * @ORM\Table(name="dpp_product")
  * @ORM\Entity(repositoryClass="Dpp\CustomersBundle\Entity\ProductRepository")
- * @UniqueEntity("urlRef")
+ * @UniqueEntity({"customer" , "urlRef"} , message="Cette reference existe pour ce client")
  */
-class Product
+class Product implements PromoCodeInterface
 {
     /**
      * @var integer
@@ -42,10 +44,10 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="urlRef", type="string", length=255, unique=true)
+     * @ORM\Column(name="urlRef", type="string", length=255)
      */
     private $urlRef;
-
+    
     /**
      * @var integer
      *
@@ -61,6 +63,12 @@ class Product
     
     private $promoCodes;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="state", type="integer")
+     */
+    private $state;
 
     /**
      * Get id
@@ -81,6 +89,7 @@ class Product
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
+        $this->customerUrl = $this->customer->getDomaine();
 
         return $this;
     }
@@ -163,7 +172,8 @@ class Product
     {
         return $this->pricingType;
     }
-        /**
+    
+    /**
      * Set promoCodes
      *
      * @param longtext $promoCodes
@@ -185,6 +195,49 @@ class Product
         return $this->promoCodes;
     }
     
+    /*
+    * get promoCode as array
+    * retur array or false
+    */
+    public function getPromoCodesAsArray()
+    {
+        if ($this->getPromoCodes() == null) return FALSE;
+        return json_decode($this->getPromoCodes());
+    }
+    
+    
+    /**
+     * Set state
+     *
+     * @param integer $state
+     * @return Product
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return integer 
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+    /**
+    * Get Customer domaine for unique key
+    * return string
+    **/
+    public function getCustomerUrl() {
+        if ($this->getCustomer() == null) {
+            return null;
+        }
+        return $this->getCustomer()->getDomaine();   
+    }
     /**
     * Get Customer name
     * return string
@@ -195,4 +248,41 @@ class Product
         }
         return $this->getCustomer()->getName();
     }
+    /** 
+    * get pricing as string
+    * return string
+    */ 
+    public function getPricingAsString()
+    {
+        $i = $this->getPricingType();    
+        if ($i > -1) {  
+            return AllTypeController::getProductPricing()[$i];
+        } else {
+            return null;
+        }   
+    }
+    
+    /** 
+    * get state as string
+    * return string
+    */
+    public function getStateAsString()
+    {
+        $i = $this->getState();    
+        if ($i > -1) {  
+            return AllTypeController::getProductState()[$i];
+        } else {
+            return null;
+        }   
+    }
+    public static function create(Customer $customer, $urlRef) {
+        $product = new Product(); // Création de l'entité
+        $product->setCustomer($customer);
+        $product->setUrlRef($urlRef);
+        $product->setPricingType(0);
+        $product->setName($urlRef);
+        $product->setState(1);
+        return $product; 
+    }
+    
 }

@@ -5,23 +5,32 @@ namespace Dpp\CustomersBundle\Form\Customer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Dpp\CustomersBundle\Controller\AllTypeController;
 
 class CustomerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $pricing = AllTypeController::getCustomerPricing();
+        $import = AllTypeController::getCustomerImport();
         $builder
             ->add('name','text',array('label' => 'Dpp.customer.name'))
             ->add('domaine','text',array('label' => 'Dpp.customer.domaine'))
-            ->add('princingType','text',array('label' => 'Dpp.customer.pricingType','required' => false))
-            ->add('visitTimeInterval','integer',array('label' => 'Dpp.customer.visitTimeInterval'))
+            ->add('defaultMsg','text',array('label' => 'Dpp.customer.defaultMsg','required' => true))
+            ->add('autoAcquisition','checkbox',array('label' => 'Dpp.customer.autoAcquisition','required' => false))
+            ->add('globalPromo','checkbox',array('label' => 'Dpp.customer.globalPromo','required' => false))
+            ->add('pricingType','choice',array('label' => 'Dpp.customer.pricingType',
+                                                'required' => true,
+                                                'choices' => $pricing,
+                                                'expanded' => false,
+                                                'multiple' => false))
+            ->add('visitTimeInterval','integer',array('label' => 'Dpp.customer.visitTimeInterval','required' => true))
             ->add('promoCodes','hidden',array('required' => false,'read_only' => false))
-            ->add('importType','choice',array('label' => 'Dpp.customer.importType','choices' => array (
-                                                                                                    0 => 'Pas de saisie',
-                                                                                                    1 => 'Saisie manuelle',
-                                                                                                    2 => 'Import manuel',
-                                                                                                    3 =>  'Import automatique')
-                                                                                                ))
+            ->add('importType','choice',array('label' => 'Dpp.customer.importType',
+                                              'required' => true,
+                                              'choices' => $import,
+                                              'expanded' => false,
+                                              'multiple' => false))
         ;
     }
 

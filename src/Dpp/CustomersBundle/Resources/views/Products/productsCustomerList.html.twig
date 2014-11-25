@@ -5,17 +5,20 @@
 {% block title %}
     Liste  - {{ parent() }}
 {% endblock %}
-
 {% block Dpp_body %}
 <div class="row span12">
 <h3>{{ 'Dpp.product.liste'|trans }} </h3>: 
- <h4>   {{ 'Dpp.product.customer'|trans }}:{{customer.name }}</h4>
+{% for flashMessage in app.session.flashbag.get('info') %}
+    <div class="txtjaune">{{ flashMessage }}</div>
+{% endfor %}
+
+ <h4>   {{ 'Dpp.product.customer'|trans }}&nbsp:&nbsp{{customer.name }}</h4>
 {% if products %}
     <table class="table-bordered">
         <thead>
             <tr>
                 <th class="span3">{{ 'Dpp.product.name'|trans }}</th>
-                <th class="span4">{{ 'Dpp.product.reference'|trans }}</th>
+                <th class="span4">{{ 'Dpp.product.urlRef'|trans }}</th>
                 <th class="span1" rowspan='2'>Action</th>               
             </tr>
         </thead>   
@@ -24,8 +27,8 @@
         <tr>
             <td>{{ product.name }}</td>
             <td>{{ product.urlRef }}</td>
-            <td><a href="{{ path('dpp_product_delete', {'id': product.id }) }}" onclick="return(confirm('{{ "Dpp.product.confirm_delete"|trans}}' ))">{{ 'Dpp.global.delete'|trans }}</a></td>
-            <td><a href="#">{{ 'Dpp.global.edit'|trans }}</a></td>
+            <td><a href="{{ path('dpp_product_delete', {'id': product.id }) }}" onclick="return(confirm(""{{ 'Dpp.product.confirm_delete'|trans }}""))">{{ 'Dpp.global.delete'|trans }}</a></td>
+            <td><a href="{{ path('dpp_product_edit', {'id': product.id }) }}" >{{ 'Dpp.global.edit'|trans }}</a></td>
         </tr>
         {% endfor %}
         </tbody>
@@ -36,11 +39,12 @@
 
     <div class="row"><br><br>
         <div class="span5">
-        <a href=" {{ returnUrl }} " class="btn "><i class="icon-chevron-left"></i>{{ 'Dpp.product.customer_return'|trans }}</a>
-    </div>
+            <a href=" {{ returnUrl }} " class="btn "><i class="icon-chevron-left"></i>{{ 'Dpp.product.customer_return'|trans }}</a>
+        </div>
         <div class="span5">
-        <a href="{{ path('dpp_product_add', {'customerRef': customer.domaine }) }}" class="btn">{{ 'Dpp.product.add'|trans }}</a>
-    </div>
-</div>  
+            <a href="{{ path('dpp_product_add', {'customerRef': customer.domaine }) }}" class="btn">{{ 'Dpp.product.add_buton'|trans }}</a>
+        </div><br><br>
+    </div> 
+ </div>
 {% endblock %}
   
