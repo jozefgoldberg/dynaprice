@@ -40,13 +40,29 @@ class BuyerCustomer
      * @ORM\Column(name="lastAccess", type="datetime")
      */
     private $lastAccess;
-
-    /**
+    
+     /**
      * @var integer
      *
      * @ORM\Column(name="totalAccess", type="integer")
      */
     private $totalAccess;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="totalPurchases", type="integer")
+     */
+    private $totalPurchases;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="totalALLAccess", type="integer")
+     */
+    private $totalAllAccess;
+    
+   
 
     /**
     * @ORM\ManyToOne(targetEntity="Dpp\BuyersBundle\Entity\Buyer")
@@ -138,6 +154,51 @@ class BuyerCustomer
     {
         return $this->totalAccess;
     }
+    
+    /**
+     * Set totalAllAccess
+     *
+     * @param integer $totalAllAccess
+     * @return BuyerCustomer
+     */
+    public function setTotalAllAccess($totalAllAccess)
+    {
+        $this->totalAllAccess = $totalAllAccess;
+
+        return $this;
+    }
+
+    /**
+     * Get totalAllAccess
+     *
+     * @return integer 
+     */
+    public function getTotalAllAccess()
+    {
+        return $this->totalAllAccess;
+    }
+    
+    /**
+     * Set totalPurchases
+     *
+     * @param integer $totalPurchases
+     * @return BuyerCustomer
+     */
+    public function setTotalPurchases($totalPurchases)
+    {
+        $this->totalPurchases = $totalPurchases;
+
+        return $this;
+    }
+
+    /**
+     * Get totalPurchases
+     * @return integer 
+     */
+    public function getTotalPurchases()
+    {
+        return $this->totalPurchases;
+    }
         
     /**
      * Set customer
@@ -183,4 +244,36 @@ class BuyerCustomer
     {
         return $this->buyer;
     }
+    
+    /* 
+    * Create segment with default
+    * @parm Buyer $buyer Customer $customer
+    * @return BuyerCustomer
+    */
+    static function getWithDefault(Customer $customer, Buyer $buyer) {
+        $date = new \DateTime('now');
+        $buyerCustomer = new BuyerCustomer();
+        $buyerCustomer->setCustomer($customer);
+        $buyerCustomer->setBuyer($buyer);
+        $buyerCustomer->setFirstAccess($date);
+        $buyerCustomer->setLastAccess($date);
+        $buyerCustomer->setTotalAccess(1);
+        $buyerCustomer->setTotalAllAccess(0);
+        $buyerCustomer->setTotalPurchases(0);
+        return $buyerCustomer;
+    }
+    
+    /* 
+    * action for one purchase
+    */
+    public function makePurchase() {;
+        $this->setTotalPurchases($this->getTotalPurchases()+1);
+        $this->setTotalAllAccess($this->getTotalAllAccess()+$this->getTotalAccess());
+        $this->setTotalAccess(0);
+    }
+    
+    
+    
+    
+    
 }

@@ -7,7 +7,7 @@
 {% endblock %}
 {% block Dpp_body %}
 <div class="row span12">
-<h3>{{ 'Dpp.product.liste'|trans }} </h3>: 
+<h3>{{ 'Dpp.product.liste'|trans }} </h3>
 {% for flashMessage in app.session.flashbag.get('info') %}
     <div class="txtjaune">{{ flashMessage }}</div>
 {% endfor %}

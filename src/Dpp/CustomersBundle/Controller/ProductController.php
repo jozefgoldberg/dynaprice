@@ -15,6 +15,20 @@ use Dpp\CustomersBundle\Form\Product\ProductType;
 
 class ProductController extends Controller
 {    
+
+    public function listByUserCustomerAction() {
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            return $this->redirect( $this->generateUrl('dpp_customers_list') );
+        }
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $customer = $user->getCustomer();
+        if (!$customer == null) {
+            return $this->listByCustomer($customer);
+        }
+        throw new AccessDeniedException("Vous n'étez pas autorisé.");       
+    }
+
+
     public function listByCustomerAction($customerRef)
     {   
         $entityManager = $this->getDoctrine()->getManager();

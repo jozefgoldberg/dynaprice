@@ -3,6 +3,10 @@
 namespace Dpp\BuyersBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Dpp\BuyersBundle\Entity\BuyerCustomer;
+use Dpp\BuyersBundle\Entity\BuyerProduct;
+use Dpp\CustomersBundle\Entity\Customer;
+use Dpp\CustomersBundle\Entity\Product;
 
 /**
  * BuyerProductRepository
@@ -12,4 +16,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class BuyerProductRepository extends EntityRepository
 {
+
+    public function removeForBuyerCustomer(BuyerCustomer $bc)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+                                                'Select bp from Dpp\BuyersBundle\Entity\BuyerProduct bp 
+                                                                                where bp.buyer = :buyer
+                                                                                  and bp.product in 
+                                                                                        (Select p from Dpp\CustomersBundle\Entity\Product p
+                                                                                                     where p.customer = :customer)')
+                                ->setParameter('buyer',$bc->getBuyer())
+                                ->setParameter('customer',$bc->getCustomer());
+        $bpList = $query->getResult();
+        foreach($bpList as $bp) {
+            $entityManager->remove($bp);
+        }
+        return;
+    }
 }

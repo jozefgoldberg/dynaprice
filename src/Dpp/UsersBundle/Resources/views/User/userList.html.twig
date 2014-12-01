@@ -7,39 +7,44 @@
 {% endblock %}
 
 {% block Dpp_user_content %}
-<div class="row span12">
-<h3>Liste des utilisateurs</h3>
-<table class="table-bordered">
-    <thead>
-        <tr>
-            <th class="span2">Compte</th>
-            <th class="span2">User</th>
-            <th class="span3">Email</th>
-            <th class="span1">Actions</th>
-        </tr>
-    </thead>   
-    <tbody>
-    {% for user in users %}
-        <tr>
-            <td> {% if user.customer %}
-                {{ user.customer.name }}
-                {% endif %}
-            </td>
-            <td>{{ user.description }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-                <a href="{{ path('Dppuser_delete', {'email': user.email}) }}">delete</a>
-                <a href="{{ path('Dppuser_update', {'email': user.email}) }}">edit</a>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
-    <div class="row">
-        <div class="span4"> </div>
-        <div class="span2"><br>
-        <a href="{{ path('Dppuser_create') }}" class="btn  pull-right"><i class="icon-plus-sign"></i> {{ 'Dpp.user.new_button'|trans }}</a>
+<div class="row">
+    <h3 class="txtcentre">{{ 'Dpp.user.liste'|trans }}</h3>
+</div>
+<div class="row">
+    <div class="span2"></div>
+    <div class="span10">
+        <table class="table-bordered">
+            <thead>
+                <tr>
+                    <th class="span2">Compte</th>
+                    <th class="span3">User</th>
+                    <th class="span3">Email</th>
+                    <th class="span1">Actions</th>
+                </tr>
+            </thead>   
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td> {% if user.customer %}
+                        {{ user.customer.name }}
+                        {% endif %}
+                    </td>
+                    <td>{{ user.description }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <a href="{{ path('Dppuser_delete', {'email': user.email}) }}">delete</a>
+                        <a href="{{ path('Dppuser_update', {'email': user.email}) }}">edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-</div>  
+</div>
+<div class="row">
+    <div class="span8"> </div>
+    <div class="span2"><br>
+    <a href="{{ path('Dppuser_create') }}" class="btn  pull-right"><i class="icon-plus-sign"></i> {{ 'Dpp.user.new_button'|trans }}</a>
+</div> 
 {% endblock %}
   

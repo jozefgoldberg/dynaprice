@@ -1,29 +1,11 @@
 {# src\Dpp\UsersBundle\Resources\views\User\userupdate.html.twig #}
 
 {% extends "DppUsersBundle::layout.html.twig" %}
-{% form_theme form _self %}
-{% block form_label %}
-{% spaceless %}
-    {% if label is not sameas(false) %}
-        {% if not compound %}
-            {% set label_attr = label_attr|merge({'for': id}) %}
-        {% endif %}
-        {% if required %}
-            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
-        {% endif %}
-        {% if label is empty %}
-            {% set label = name|humanize %}
-        {% endif %}
-        <label class="labelform span1" {% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
-    {% endif %}
-{% endspaceless %}
-{% endblock form_label %}
 
 {% block Dpp_user_content %}
-<div class="row span12">
-<h3> {{ 'Dpp.user.update_title'|trans }} </h3>
-
+<h3 class="txtcentre"> {{ 'Dpp.user.update_title'|trans }} </h3>
+<div class="label-and-input">
 	{% include "DppUsersBundle:User:userform.html.twig" %}
-
+</div><br><br><br>
 	
 {% endblock %}

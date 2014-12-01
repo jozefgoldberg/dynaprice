@@ -1,30 +1,45 @@
 ﻿{# src/Dpp/CustomersBundle/Resources/views/Customer/customerUpdateForm.html.twig #}
 
-
-<script type="text/javascript" src="{{ asset('js/dppTabPromo.js') }}"></script> 
+{% form_theme form 'DppCustomersBundle:Default:fields.html.twig' %}
+<script type="text/javascript" src="{{ asset('js/dppTabPromo.js') }}"></script>
     <div class="row">
         <form method="post"  Onsubmit="return DppComputeTabCode($('#dpp_customersbundle_customers_customertype_promoCodes'))"   {{ form_enctype(form) }}>
         <div class="txtred">{{ form_errors(form) }}{{ form_errors(form.importType) }}{{ form_errors(form.defaultMsg) }}</div>
             <div class="row">
                 <div class="span1"></div>
-                <div class="span5"><div class="span2">{{ form_label(form.name) }}</div>{{ form_widget(form.name) }}</div>
-                <div class="span5"><div class="span2">{{ form_label(form.domaine) }}</div>{{ form_widget(form.domaine) }}</div>
+                <div class="span5">
+                    {{ form_row(form.name) }} 
+                </div>
+                <div class="span5">
+                    {{ form_row(form.domaine) }} 
+                </div>
             </div>
             <div class="row">
                 <div class="span1"></div>
-                <div class="span5"><div class="span2">{{ form_label(form.pricingType) }}</div>{{ form_widget(form.pricingType) }}</div>
-                <div class="span5"><div class="span2">{{ form_label(form.visitTimeInterval) }}</div>{{ form_widget(form.visitTimeInterval) }}</div>
+                <div class="span5">
+                    {{ form_row(form.pricingType) }} 
+                </div>
+                <div class="span5">
+                    {{ form_row(form.visitTimeInterval) }} 
+                </div>
             </div>
             <div class="row">
                 <div class="span1"></div>
-                <div class="span5"><div class="span2">{{ form_label(form.importType) }}</div>{{ form_widget(form.importType) }}</div>
-                <div class="span5"><div class="span2">{{ form_label(form.defaultMsg) }}</div>{{ form_widget(form.defaultMsg) }}</div>
+                <div class="span5">
+                    {{ form_label(form.importType) }} {{ form_widget(form.importType) }} 
+                </div>
+                <div class="span5">
+                    {{ form_label(form.defaultMsg) }} {{ form_widget(form.defaultMsg) }}
+                </div>
             </div>
             <div class="row">
                 <div class="span1"></div>
-                <div class="span4"><div class="span3">{{ form_label(form.autoAcquisition) }}</div>{{ form_widget(form.autoAcquisition) }}</div>
-                <div class="span3"><div class="span2">{{ form_label(form.globalPromo) }}</div>{{ form_widget(form.globalPromo) }}</div>
-                <div class="span3"><div class="span2">{{ form_label(form.categoryPromo) }}</div>{{ form_widget(form.categoryPromo) }}</div> 
+                <div class="span5">
+                    {{ form_row(form.autoAcquisition) }} 
+                </div>
+                <div class="span5">
+                    {{ form_row(form.globalPromo) }} 
+                </div>
             </div>
                 {{ form_rest(form) }}
             <div class="row">

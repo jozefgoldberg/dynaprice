@@ -19,6 +19,7 @@ class CustomerType extends AbstractType
             ->add('defaultMsg','text',array('label' => 'Dpp.customer.defaultMsg','required' => true))
             ->add('autoAcquisition','checkbox',array('label' => 'Dpp.customer.autoAcquisition','required' => false))
             ->add('globalPromo','checkbox',array('label' => 'Dpp.customer.globalPromo','required' => false))
+            ->add('categoryPromo','checkbox',array('label' => 'Dpp.customer.categoryPromo','required' => false))
             ->add('pricingType','choice',array('label' => 'Dpp.customer.pricingType',
                                                 'required' => true,
                                                 'choices' => $pricing,

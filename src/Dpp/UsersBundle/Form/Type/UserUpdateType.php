@@ -13,6 +13,12 @@ class UserUpdateType extends AbstractType
     {
         $roles = RoleTypeController::getRoles();
         $builder
+            ->add('customer','entity',array('required' => false,
+                                            'label' => 'Dpp.user.customer.name',
+                                            'class'   => 'DppCustomersBundle:Customer',
+                                            'property'=> 'name',
+                                            'read_only' => true,
+                                            'multiple'=> false))
             ->add('firstName','text',array('label' => 'Dpp.user.first_name'))
             ->add('lastName','text',array('label' => 'Dpp.user.last_name'))
             ->add('email','text',array('label' => 'Dpp.user.email'))

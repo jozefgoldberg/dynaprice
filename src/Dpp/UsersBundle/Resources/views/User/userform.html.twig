@@ -5,6 +5,14 @@
 <div class="well">
     <form method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
-        <input type="submit" class="btn btn-primary" />
+    
+        <div class="row"> 
+            <div class="span2"> 
+                <a href=" {{ returnUrl }} " class="btn "><i class="icon-chevron-left"></i>Cancel</a>        
+            </div>
+            <div class="span2"> 
+                <input type="submit" class="btn pull-right btn-primary"  />      
+            </div>
+        </div>
     </form>
 </div>

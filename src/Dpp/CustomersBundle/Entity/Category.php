@@ -10,14 +10,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Dpp\CustomersBundle\Controller\AllTypeController;
 use Dpp\AjaxServeurBundle\Entity\PromoCodeInterface;
 /**
- * Product
+ * Category
  *
  * @ORM\Table()
- * @ORM\Table(name="dpp_product")
- * @ORM\Entity(repositoryClass="Dpp\CustomersBundle\Entity\ProductRepository")
- * @UniqueEntity({"customer" , "urlRef"} , message="Cette reference existe pour ce client")
+ * @ORM\Table(name="dpp_category")
+ * @ORM\Entity(repositoryClass="Dpp\CustomersBundle\Entity\CategoryRepository")
  */
-class Product implements PromoCodeInterface
+class Category implements PromoCodeInterface
 {
     /**
      * @var integer
@@ -29,10 +28,21 @@ class Product implements PromoCodeInterface
     private $id;
     
     /**
-   * @ORM\ManyToOne(targetEntity="Dpp\CustomersBundle\Entity\Customer", inversedBy="products")
+   * @ORM\ManyToOne(targetEntity="Dpp\CustomersBundle\Entity\Customer")
    * @ORM\JoinColumn(nullable=false)
    */
     private $customer;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * 
+     */
+    private $parent;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     */
+    private $children;
     
     /**
      * @var string
@@ -69,15 +79,14 @@ class Product implements PromoCodeInterface
      * @ORM\Column(name="state", type="integer")
      */
     private $state;
+    
+    /*
+    * Construct function
+    */
+    public function __construct() {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
-    /**
-   * @ORM\ManyToOne(targetEntity="Dpp\CustomersBundle\Entity\Category")
-   * @ORM\JoinColumn(nullable=true)
-   */
-    private $category;    
-    
-    
-    
     /**
      * Get id
      *
@@ -92,11 +101,12 @@ class Product implements PromoCodeInterface
      * Set customer
      *
      * @param Customer $customer
-     * @return Product
+     * @return Category
      */
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
+        $this->customerUrl = $this->customer->getDomaine();
 
         return $this;
     }
@@ -112,33 +122,10 @@ class Product implements PromoCodeInterface
     }
     
     /**
-     * Set category
-     *
-     * @param Category $category
-     * @return Product
-     */
-    public function setCategory(Category $category)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return Category
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-    
-    /**
      * Set name
      *
      * @param string $name
-     * @return Product
+     * @return Category
      */
     public function setName($name)
     {
@@ -161,7 +148,7 @@ class Product implements PromoCodeInterface
      * Set urlRef
      *
      * @param string $urlRef
-     * @return Product
+     * @return Category
      */
     public function setUrlRef($urlRef)
     {
@@ -184,7 +171,7 @@ class Product implements PromoCodeInterface
      * Set pricingType
      *
      * @param integer $pricingType
-     * @return Product
+     * @return Category
      */
     public function setPricingType($pricingType)
     {
@@ -240,7 +227,7 @@ class Product implements PromoCodeInterface
      * Set state
      *
      * @param integer $state
-     * @return Product
+     * @return Category
      */
     public function setState($state)
     {
@@ -258,6 +245,88 @@ class Product implements PromoCodeInterface
     {
         return $this->state;
     }
+    
+    /**
+     * Set parent
+     *
+     * @param Dpp\CustomersBundle\Entity\Category $category
+     * @return Project
+     */
+    public function setParent($category)
+    {
+        $this->parent = $category;
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return Dpp\CustomersBundle\Entity\Category
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+    
+    /**
+    * Has Parent
+    *
+    * @return boolean true if has parent
+    */
+    public function hasParent()
+    {
+        return !($this->parent == null);
+    }
+    public function getParentTree() 
+    {
+        $parentTree = new \Doctrine\Common\Collections\ArrayCollection();
+        $obj = $this;
+        while ($obj->hasParent()) {
+            $obj = $obj->getParent();
+            $parentTree[] = $obj;
+        }   
+        return $parentTree;
+    }
+    
+    /**
+    * Add children
+    *
+    * @param Dpp\CustomersBundle\Entity\Category $category
+    * @return Project
+    */
+    public function addChild($category)
+    {
+        $this->children[] = $category;
+        return $this;
+    }
+    
+    /**
+    * Remove children
+    *
+    * @param Dpp\CustomersBundle\Entity\Category $category
+    */
+    public function removeChild($category)
+    {
+        $this->children->remove($category);
+        return $this;
+    }
+    
+    /**
+    * get children
+    *
+    * @return collection
+    */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+    
+    
+    
+    
+    
+    
+    
     /**
     * Get Customer domaine for unique key
     * return string
@@ -304,15 +373,6 @@ class Product implements PromoCodeInterface
         } else {
             return null;
         }   
-    }
-    public static function create(Customer $customer, $urlRef) {
-        $product = new Product(); // Création de l'entité
-        $product->setCustomer($customer);
-        $product->setUrlRef($urlRef);
-        $product->setPricingType(0);
-        $product->setName($urlRef);
-        $product->setState(1);
-        return $product; 
     }
     
 }

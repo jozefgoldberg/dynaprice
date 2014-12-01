@@ -52,10 +52,11 @@ class UserController extends Controller
                     //$user->addRole('ROLE_USER');
                     $userManager->UpdateUser($user);
                     //$this->get('session')->getFlashBag()->add('info', 'User bien enregistré');
-                    return $this->redirect( $this->generateUrl('Dppuser_accueil'));
+                    return $this->redirect( $this->generateUrl('Dpp_user_accueil'));
                 }
             }
-        return $this->render('DppUsersBundle:User:useradd.html.twig', array('form' => $form->createView()));
+        $returnUrl = $this->generateUrl('Dpp_user_accueil');
+        return $this->render('DppUsersBundle:User:useradd.html.twig', array('form' => $form->createView(), 'returnUrl' => $returnUrl));
 	}
     
 	public function updateAction($email)
@@ -68,11 +69,12 @@ class UserController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $userManager->UpdateUser($user);
-                return $this->redirect( $this->generateUrl('Dppuser_accueil'));
+                return $this->redirect( $this->generateUrl('Dpp_user_accueil'));
             }
 		}
-		return $this->render('DppUsersBundle:User:userupdate.html.twig', array('form' => $form->createView()
-                                                                              ));
+        $returnUrl = $this->generateUrl('Dpp_user_accueil');
+		return $this->render('DppUsersBundle:User:userupdate.html.twig', array('form' => $form->createView(),
+                                                                               'returnUrl' => $returnUrl));
 	}
     
     public function deleteAction($email)
@@ -81,10 +83,10 @@ class UserController extends Controller
 		$user = $userManager->findUserByEmail($email);
         if ($this->getUser() == $user) {
             $this->get('session')->getFlashBag()->add('info', 'Dpp.message.connot_delete_imself');
-            return $this->redirect( $this->generateUrl('Dppblog_accueil')); 
+            return $this->redirect($this->generateUrl('Dpp_user_accueil')); 
          }
         $userManager->deleteUser($user);
-        return $this->redirect( $this->generateUrl('Dppuser_accueil')); 
+        return $this->redirect( $this->generateUrl('Dpp_user_accueil')); 
 	}
  
 }

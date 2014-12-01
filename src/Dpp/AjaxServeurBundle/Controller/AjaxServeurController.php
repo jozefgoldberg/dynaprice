@@ -13,6 +13,11 @@ use Dpp\CustomersBundle\Entity\Product;
 
 class AjaxServeurController extends Controller
 {
+    protected $entityManager = null;
+    
+    /**
+    * todfo Constructor make to get entity manager
+    */
 
     public function getResponse($msg) {
         $response = new Response($msg,200,array('content-type' => 'text/xml'));
@@ -56,14 +61,18 @@ class AjaxServeurController extends Controller
                 $buyerProduct = $this->getBuyerProduct($buyer, $product);// get buyerProduct or creat it if no exist
                 $visites = $buyerProduct->getTotalAccess();
                 $pricingType = 0;
-                if ($product->getPricingType() == 0) {
-                    $pricingType = $customer->getPricingType();
+                if (!$customer->isGlobalPromo()) { // pas de message produit si promo général
+                    if ($product->getPricingType() == 0) {
+                        $pricingType = $customer->getPricingType();
+                    }
+                    $tabPromo = $product->getPromoCodesAsArray();
+                    if ($tabPromo === FALSE) {
+                        $tabPromo = $customer->getPromoCodesAsArray();
+                    }
+                    if (!$tabPromo === FALSE) {
+                        $msg = $this->getPromoMessage($customer, $tabPromo, $pricingType, $visites);
+                    }
                 }
-                $tabPromo = $product->getPromoCodesAsArray();
-                if ($tabPromo === FALSE) {
-                    $tabPromo = $customer->getPromoCodesAsArray();
-                }
-                $msg = $this->getPromoMessage($customer, $tabPromo, $pricingType, $visites);
             }
         }
         if ($msg == null) { 
@@ -73,12 +82,36 @@ class AjaxServeurController extends Controller
     }
     
     /**
+    *  Buyer as buyed  from one customer Ajax
+    *  achat++
+    *  total product for this customers is archived and deleteed ?
+    */    
+    public function achatBruyerFromCustomerAction($domaine, $uuid) {
+        if ($this->entityManager == null) { 
+            $this->entityManager = $this->getDoctrine()->getManager();
+        }
+        $msg = '<resp></resp>';
+        $customer = $this->getCustomerByDomaine($domaine); 
+        if (!$customer == null) {   
+            $buyer = $this->getBuyerByUid($uuid);  // get buyer or creat it if no exist
+            $buyerCustomer= $this->getBuyerCustomer($customer, $buyer);// get buyerCustomer or creat it if no exist
+            //
+            $buyerCustomer->makePurchase();
+            $this->entityManager->getRepository('DppBuyersBundle:BuyerProduct')->removeForBuyerCustomer($buyerCustomer);
+            $this->entityManager->flush();
+        }
+        return $this->getResponse($msg);   
+    }
+    
+    /**
     * Get customer by domain
     */ 
     private function getCustomerByDomaine($domain) {
-        $entityManager = $this->getDoctrine()->getManager();
+        if ($this->entityManager == null) { 
+            $this->entityManager = $this->getDoctrine()->getManager();
+        }
         $customer = null;
-        $customList = $entityManager->getRepository('DppCustomersBundle:Customer')->findBy(array('domaine' => $domain));
+        $customList = $this->entityManager->getRepository('DppCustomersBundle:Customer')->findBy(array('domaine' => $domain));
         if (!$customList == null) {
             $customer = $customList[0];
         }
@@ -90,13 +123,15 @@ class AjaxServeurController extends Controller
     * if not existe and customer is autoAcquisition create is
     */ 
     private function getProductByReference(Customer $customer,  $prodRef) {
-        $entityManager = $this->getDoctrine()->getManager();
-        $product = $entityManager->getRepository('DppCustomersBundle:Product')->findOneBy(array('customer'=>$customer, 'urlRef' => $prodRef));
+        if ($this->entityManager == null) { 
+            $this->entityManager = $this->getDoctrine()->getManager();
+        }
+        $product = $this->entityManager->getRepository('DppCustomersBundle:Product')->findOneBy(array('customer'=>$customer, 'urlRef' => $prodRef));
         if ($product == null) {
             if ($customer->isAutoAcquisition()) {       
                 $product = Product::create($customer,  $prodRef);
-                $entityManager->persist($product);
-                $entityManager->flush();
+                $this->entityManager->persist($product);
+                $this->entityManager->flush();
             } 
         }
         return $product;
@@ -106,21 +141,23 @@ class AjaxServeurController extends Controller
     * get Buyer by uuid if no exist create it
     */
     private function getBuyerByUid($uuid) {
-        $entityManager = $this->getDoctrine()->getManager();
+        if ($this->entityManager == null) { 
+            $this->entityManager = $this->getDoctrine()->getManager();
+        }
         $date = new \DateTime('now');
-        $buyersList = $entityManager->getRepository('DppBuyersBundle:Buyer')->findBy(array('uuid' => $uuid));
+        $buyersList = $this->entityManager->getRepository('DppBuyersBundle:Buyer')->findBy(array('uuid' => $uuid));
         // register if noexist
         if ($buyersList == null) {
             $buyer = new Buyer(); 
             $buyer->setUuid($uuid);
             $buyer->setFirstAccess($date);
             $buyer->setLastAccess($date);
-            $entityManager->persist($buyer);
+            $this->entityManager->persist($buyer);
         } else {
             $buyer = $buyersList[0];
             $buyer->setLastAccess($date);
         }
-        $entityManager->flush();
+        $this->entityManager->flush();
         return $buyer;
     }   
     
@@ -128,17 +165,14 @@ class AjaxServeurController extends Controller
     * get BuyerCustomer if no exist creat it
     */
     private function getBuyerCustomer(Customer $customer, Buyer $buyer) {
-        $entityManager = $this->getDoctrine()->getManager();
+        if ($this->entityManager == null) { 
+            $this->entityManager = $this->getDoctrine()->getManager();
+        }
         $date = new \DateTime('now');
-        $bcList = $entityManager->getRepository('DppBuyersBundle:BuyerCustomer')->findBy(array('customer' => $customer,'buyer'=> $buyer ));
+        $bcList = $this->entityManager->getRepository('DppBuyersBundle:BuyerCustomer')->findBy(array('customer' => $customer,'buyer'=> $buyer ));
         if ($bcList == null) {
-            $bc = new BuyerCustomer(); 
-            $bc->setCustomer($customer);
-            $bc->setBuyer($buyer);
-            $bc->setFirstAccess($date);
-            $bc->setLastAccess($date);
-            $bc->setTotalAccess(1);
-            $entityManager->persist($bc);
+            $bc = BuyerCustomer::getWithDefault($customer, $buyer); 
+            $this->entityManager->persist($bc);
         } else {
             $bc = $bcList[0];
             $ts = $date->getTimestamp() - $bc->getLastAccess()->getTimestamp();  
@@ -148,7 +182,7 @@ class AjaxServeurController extends Controller
                 $bc->setLastAccess($date);
             }
         }
-        $entityManager->flush();
+        $this->entityManager->flush();
         return $bc;
     }   
     
@@ -156,10 +190,12 @@ class AjaxServeurController extends Controller
     * get BuyerProduct if no exist creat it
     */
     private function getBuyerProduct(Buyer $buyer, Product $product) {
-        $entityManager = $this->getDoctrine()->getManager();
+        if ($this->entityManager == null) { 
+            $this->entityManager = $this->getDoctrine()->getManager();
+        }
         $date = new \DateTime('now');
-        $bpList = $entityManager->getRepository('DppBuyersBundle:BuyerProduct')->findBy(array('buyer'=> $buyer, 'product' => $product ));
-        if ($bpList == null) {
+        $bp = $this->entityManager->getRepository('DppBuyersBundle:BuyerProduct')->findOneBy(array('buyer'=> $buyer, 'product' => $product ));
+        if ($bp == null) {
             $bp = new BuyerProduct(); 
             $bp->setProduct($product);
             $bp->setBuyer($buyer);
@@ -167,9 +203,8 @@ class AjaxServeurController extends Controller
             $bp->setLastAccess($date);
             $bp->setTotalAccess(1);
             $bp->setStatus(0);
-            $entityManager->persist($bp);
+            $this->entityManager->persist($bp);
         } else {
-            $bp = $bpList[0];
             $ts = $date->getTimestamp() - $bp->getLastAccess()->getTimestamp();     
             $ts = $ts / 3600; // en heures
             if ($ts > $product->getCustomer()->getVisitTimeInterval() ) {
@@ -177,7 +212,7 @@ class AjaxServeurController extends Controller
                 $bp->setLastAccess($date);
             }
         }
-        $entityManager->flush();
+        $this->entityManager->flush();
         return $bp;
     }   
        

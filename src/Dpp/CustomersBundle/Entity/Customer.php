@@ -99,6 +99,13 @@ class Customer implements PromoCodeInterface
      */
     private $globalPromo;
     
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="categoryPromo", type="boolean")
+     */
+    private $categoryPromo;
+    
     
     
     
@@ -341,7 +348,32 @@ class Customer implements PromoCodeInterface
     {
         return $this->globalPromo;
     }
-    
+    /**
+     * Set categoryPromo
+     *
+     * @param boolean $categoryPromo
+     * @return Customer
+     */
+    public function setCategoryPromoo($categoryPromo)
+    {
+        $this->categoryPromo = $categoryPromo;
+
+        return $this;
+    }
+
+    /**
+     * Get globalPromo
+     *
+     * @return boolean 
+     */
+    public function getCategoryPromo()
+    {
+        return $this->categoryPromo;
+    }
+    public function isCategoryPromo()
+    {
+        return $this->categoryPromo;
+    }
     
     /**
     * Add, remove, and get Product collection
@@ -403,7 +435,20 @@ class Customer implements PromoCodeInterface
         if (!stripos($this->getDefaultMsg(), '[$code$]')) {
             $context->addViolationAt(
                 'defaultMsg','Dpp.error.customer.noValideMsg',array(), null);
-        }
+        } 
     }
+    
+    static function getWithDefault() {
+        $msg = "C'est votre [$". "visite$] visite.  Vous bénéficiez du code promotion [$" . "code$].";
+        $customer = new Customer();
+        $customer->setVisitTimeInterval(24);
+        $customer->setImportType(0);
+        $customer->setDefaultMsg($msg);
+        $customer->setAutoAcquisition(False);
+        $customer->setGlobalPromo(False);
+        $customer->setCategoryPromoo(False);
+        return $customer;
+    }
+    
     
 }

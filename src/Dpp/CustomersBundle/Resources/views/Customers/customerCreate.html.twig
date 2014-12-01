@@ -3,10 +3,9 @@
 {% extends "DppCustomersBundle::layout.html.twig" %}
 
 {% block Dpp_body %}
-<div class="row span10">
-<h3> {{ 'Dpp.customer.add_customer'|trans }} </h3>
+<h3 class="txtcentre"> {{ 'Dpp.customer.add_customer'|trans }} </h3>
 <div class="label-and-input">
 	{% include "DppCustomersBundle:Customers:customerCreateForm.html.twig" %}
-</div>
+</div><br><br><br>
 	
 {% endblock %}

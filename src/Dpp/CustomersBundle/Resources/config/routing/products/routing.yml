@@ -1,3 +1,6 @@
+dpp_product_homepage:
+    path:     /
+    defaults: { _controller: DppCustomersBundle:Product:listByUserCustomer}
 dpp_products_customer:
     path:      /{customerRef}
     defaults:  { _controller: DppCustomersBundle:Product:listByCustomer}

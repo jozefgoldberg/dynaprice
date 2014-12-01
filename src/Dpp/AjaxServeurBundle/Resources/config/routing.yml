@@ -2,6 +2,10 @@ dpp_ajax_serveur_access:
     path:     /access/{domaine}/{uuid}
     defaults: { _controller: DppAjaxServeurBundle:AjaxServeur:accessBruyerFromCustomer}
     
+dpp_ajax_serveur_achat:
+    path:     /achat/{domaine}/{uuid}
+    defaults: { _controller: DppAjaxServeurBundle:AjaxServeur:achatBruyerFromCustomer}
+    
 dpp_ajax_serveur_product:
     path:     /product/{domaine}/{uuid}/{prodRef}
     defaults: { _controller: DppAjaxServeurBundle:AjaxServeur:accessProduct}
