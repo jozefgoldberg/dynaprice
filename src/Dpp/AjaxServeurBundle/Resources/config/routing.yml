@@ -7,5 +7,5 @@ dpp_ajax_serveur_achat:
     defaults: { _controller: DppAjaxServeurBundle:AjaxServeur:achatBruyerFromCustomer}
     
 dpp_ajax_serveur_product:
-    path:     /product/{domaine}/{uuid}/{prodRef}
+    path:     /product/{domaine}/{uuid}/{urlRef}
     defaults: { _controller: DppAjaxServeurBundle:AjaxServeur:accessProduct}

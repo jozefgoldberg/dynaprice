@@ -2,6 +2,27 @@
  * Pmeweb - complement css
  * 
  */
+html, body, container  {
+    height : 100%;
+}
+body  {
+    margin: 0;
+}
+.panel {
+  position: relative;
+  background-color: #000000;
+  min-height: 100%;
+   margin: 0;
+}
+
+.footer {
+    height: 50px;
+    width: auto;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
 
 .well {
     background-color: inherit;
@@ -12,6 +33,14 @@
 }
 .table {
   background-color: #eeeeee;
+}
+.table-bordered td{
+    padding: 5px;
+}
+
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+  background-color: #666666;
 }
 .spangris {
     background-color: #eeeeee;
@@ -40,17 +69,20 @@ td {
 td {
     font-weight: normal;
 }
-footer {
-    margin-top: 30px;
-}
 .container-fluid {
-	/* background-color : #D9EFF5; */
     color : #FFFFFF;
     background-color : #000000;
 }
 
 .tigerfond {
-background-color : #FFAA00;
+    background-color : #FFAA00;
+}
+.zone-bordered {
+    border: 1px solid #FFAA00;
+    padding-top: 10px;
+    -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
 }
 #header{
     height: 140px;
@@ -59,13 +91,32 @@ background-color : #FFAA00;
     border-bottom-color: green;
     background-color : #FFAA00;
 }
+
+.header{
+    height: 160px;
+    border-bottom-style:ridge;
+    border-bottom-width:1px;
+    border-bottom-color: green;
+    background-color : #FFAA00;
+}
+
+.table-bordered {
+    background-color: #777777;
+}
+.btn-default {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+    background-color: #999999;
+}
 .hero-unit {
   padding: 20px;
 }
 .txtred {
     color:  red;
 }
-.txtjaune {
+.txttiger {
     color:  #FFAA00;
 }
 .txtcentre {
@@ -115,12 +166,35 @@ background-color : #FFAA00;
   font-weight: normal;
 }
 .navigation-bar {
-    margin-top: 18px;
+    margin-top: 0px;
     padding: 0px;
     width: 100%;
-    *background-color: #A8A8A8;
+    background-color: inherit;
 }
 .a-neutre {
     color: inherit; 
     text-decoration: none;
 }
+.flot-left {
+    float: left;
+}
+iselect,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input { 
+    height: 25px;
+}
+

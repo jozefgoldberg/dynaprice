@@ -11,43 +11,47 @@
     <h3 class="txtcentre">{{ 'Dpp.customer.liste'|trans }}</h3>
 </div>
 <div class="row">
-    <div class="span2"></div>
-    <div class="span8">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
         {% if customers %}
-            <table class="table-bordered" >
+            <div class="table-responsive ">
+            <table class=" table-striped table-bordered " >
                 <thead>
                     <tr>
-                        <th class="span2">{{ 'Dpp.customer.name'|trans }}</th>
-                        <th class="span2">{{ 'Dpp.customer.domaine'|trans }}</th>
-                        <th class="span2">{{ 'Dpp.customer.short.pricingType'|trans }}</th>
-                        <th class="span1">Actions</th>
+                        <th class="col-lg-2">{{ 'Dpp.customer.name'|trans }}</th>
+                        <th class="col-lg-2">{{ 'Dpp.customer.domaine'|trans }}</th>
+                        <th class="col-lg-1"></th>
+                        <th class="col-lg-1"></th>
                     </tr>
                 </thead>   
                 <tbody>
                 {% for customer in customers %}
                 <tr>
                     <td>{{ customer.name }}</td>
-                    <td>{{ customer.domaine }}</td>
-                    <td>{{ customer.pricingAsString|trans }}</td>
-                    <td>
-                        <a href="{{ path('dpp_customers_delete', {'customerRef': customer.domaine }) }}" onclick=""return(confirm('{{ "Dpp.global.confirm_delete"|trans}}' ))"" >delete</a>
-                        <a href="{{ path('dpp_customers_update', {'customerRef': customer.domaine }) }}" >edit</a>
-                    </td>
+                    <td>{{ customer.domaine }}</td>      
+                    <td><a href="{{ path('dpp_customers_update', {'customerRef': customer.domaine }) }}" class="grph-btn" >
+                        <img src="/dynaprice/web/img/icones/write_obj.gif">&nbsp{{ "Dpp.global.edit"|trans }}
+                    </a></td>
+                    <td><a href="{{ path('dpp_customers_delete', {'customerRef': customer.domaine }) }}" class="btn-default" onclick='return(confirm("{{ 'Dpp.global.confirm_delete'|trans}}" ))' >
+                        <img src="/dynaprice/web/img/icones/delete_obj.gif">&nbsp{{ "Dpp.global.delete"|trans }}
+                    </a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
             </table><br>
+            </div>
         {% else %}
-            {{ 'Dpp.customer.notfound'|trans }}
+            {{ 'Dpp.customer.notfound'|trans }}                                                 
         {% endif %}
     </div>
 </div>
 <div class="row">
-        <div class="span9"> </div>
-        <div class="span3">
-            <a href="{{ path('dpp_customers_add') }}" class="btn">{{ 'Dpp.customer.add_buton'|trans }}</a>
+        <div class="col-lg-3"> </div>
+        <div class="col-lg-3 col-lg-offset-4">
+            <a href="{{ path('dpp_customers_add') }}" class="grph-btn">
+                <img src="/dynaprice/web/img/icones/add_obj.gif">&nbsp{{ 'Dpp.customer.add_buton'|trans }}
+            </a>
         </div>
-        <br><br><br><br>
 </div> 
 {% endblock %}
   

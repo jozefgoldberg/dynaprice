@@ -9,8 +9,11 @@ function dpp_request(action,urlRef) {
     var httpAdr ="";
     if(action == 'access') {httpAdr = dppHttpAdr + 'access/' + dppCliDomaine  + '/' + dppUid};
     if(action == 'product') {
-        var pos = urlRef.lastIndexOf("/");
-        if (pos > -1) { urlRef = urlRef.substr(pos+1); }
+        var res = urlRef.replace('/','£');
+        while (!(urlRef===res)) {
+            urlRef = res.replace('/','£');
+            res = urlRef.replace('/','£');
+        }
         httpAdr = dppHttpAdr + 'product/' + dppCliDomaine  + '/' + dppUid + '/' +urlRef
     };
     xhr.open("GET",httpAdr,true);

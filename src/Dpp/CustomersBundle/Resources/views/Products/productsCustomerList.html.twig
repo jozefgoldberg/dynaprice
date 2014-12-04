@@ -6,45 +6,67 @@
     Liste  - {{ parent() }}
 {% endblock %}
 {% block Dpp_body %}
-<div class="row span12">
-<h3>{{ 'Dpp.product.liste'|trans }} </h3>
-{% for flashMessage in app.session.flashbag.get('info') %}
-    <div class="txtjaune">{{ flashMessage }}</div>
-{% endfor %}
-
- <h4>   {{ 'Dpp.product.customer'|trans }}&nbsp:&nbsp{{customer.name }}</h4>
-{% if products %}
-    <table class="table-bordered">
-        <thead>
-            <tr>
-                <th class="span3">{{ 'Dpp.product.name'|trans }}</th>
-                <th class="span4">{{ 'Dpp.product.urlRef'|trans }}</th>
-                <th class="span1" rowspan='2'>Action</th>               
-            </tr>
-        </thead>   
-        <tbody>
-        {% for product in products %}
-        <tr>
-            <td>{{ product.name }}</td>
-            <td>{{ product.urlRef }}</td>
-            <td><a href="{{ path('dpp_product_delete', {'id': product.id }) }}" onclick="return(confirm(""{{ 'Dpp.product.confirm_delete'|trans }}""))">{{ 'Dpp.global.delete'|trans }}</a></td>
-            <td><a href="{{ path('dpp_product_edit', {'id': product.id }) }}" >{{ 'Dpp.global.edit'|trans }}</a></td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    {{ 'Dpp.product.notfound'|trans }}
-{% endif %}
-
-    <div class="row"><br><br>
-        <div class="span5">
-            <a href=" {{ returnUrl }} " class="btn "><i class="icon-chevron-left"></i>{{ 'Dpp.product.customer_return'|trans }}</a>
+<div class="row">
+    <h3 class="txtcentre">{{ 'Dpp.product.liste'|trans }} : <b class="txttiger">{{customer.name }}</b></h3>
+    {% for flashMessage in app.session.flashbag.get('info') %}
+        <div class="txtjaune">{{ flashMessage }}</div>
+    {% endfor %}
+</div>
+<div class="row">
+    
+    
+    {% if products %}
+        <div class="table-responsive ">
+            <table class=" table-striped table-bordered " >
+                <thead>
+                    <tr>
+                        <th class="col-lg-2">{{ 'Dpp.product.name'|trans }}</th>
+                        {% if customer.hasCategory %}
+                            <th class="col-lg-2">{{ 'Dpp.product.category'|trans }}</th>
+                        {% endif %}
+                        <th class="col-lg-2">{{ 'Dpp.product.urlRef'|trans }}</th>
+                        <th class="col-lg-2"></th>
+    
+                    </tr>
+                </thead>  
+                <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                     {% if customer.hasCategory %}
+                        {% if product.category %}
+                            <td>{{ product.category.name }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% endif %}
+                    <td>{{ product.urlRef }}</td>
+                    <td><a href="{{ path('dpp_product_edit', {'id': product.id }) }}" class="grph-btn" >
+                        <img src="/dynaprice/web/img/icones/write_obj.gif">&nbsp{{ "Dpp.global.edit"|trans }}
+                    &nbsp&nbsp<a href="{{ path('dpp_product_delete', {'id': product.id }) }}" class="btn-default" onclick='return(confirm("{{ 'Dpp.product.confirm_delete'|trans}}" ))' >
+                        <img src="/dynaprice/web/img/icones/delete_obj.gif">&nbsp{{ "Dpp.global.delete"|trans }}
+                    </a></td>                 
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table><br>
         </div>
-        <div class="span5">
-            <a href="{{ path('dpp_product_add', {'customerRef': customer.domaine }) }}" class="btn">{{ 'Dpp.product.add_buton'|trans }}</a>
-        </div><br><br>
-    </div> 
- </div>
+    {% else %}
+        {{ 'Dpp.product.notfound'|trans }}
+    {% endif %}
+    </div>
+</div>
+<div class="row">
+        
+        <div class="col-lg-3">
+            <a href=" {{ returnUrl }} " class="grph-btn "><i class="icon-chevron-left"></i>{{ 'Dpp.product.customer_return'|trans }}</a>
+        </div>
+        <div class="col-lg-3 col-lg-offset-4">
+            <a href="{{ path('dpp_product_add', {'customerRef': customer.domaine }) }}" class="grph-btn">
+                <img src="/dynaprice/web/img/icones/add_obj.gif">&nbsp{{ 'Dpp.product.add_buton'|trans }}
+            </a>
+        </div>
+</div> 
+
 {% endblock %}
   

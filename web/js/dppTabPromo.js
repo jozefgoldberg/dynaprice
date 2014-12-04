@@ -3,8 +3,9 @@
 // 
 function DppAddRow(object)
 {
+    var col4 = '<td><a href"#"  onclick="DppDeleteRow(this);" class="btn-default"><img src="/dynaprice/web/img/icones/delete_obj.gif">&nbspSupprimer';
     if ($('#visites').val() && $('#code').val() ) {
-        var ligne = '<tr><td>'+$('#visites').val()+'</td><td>'+$('#code').val()+'</td><td>'+$('#message').val()+'</td><td><a href"#"  onclick="DppDeleteRow(this);"><img src="/dynaprice/web/img/delete_obj.gif"></a></td></tr>';
+        var ligne = '<tr><td>'+$('#visites').val()+'</td><td>'+$('#code').val()+'</td><td>'+$('#message').val()+col4;
         $('#tableau tr:last').after(ligne);
     }
     $('#visites').val('');

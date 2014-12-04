@@ -354,7 +354,7 @@ class Customer implements PromoCodeInterface
      * @param boolean $categoryPromo
      * @return Customer
      */
-    public function setCategoryPromoo($categoryPromo)
+    public function setCategoryPromo($categoryPromo)
     {
         $this->categoryPromo = $categoryPromo;
 
@@ -370,7 +370,11 @@ class Customer implements PromoCodeInterface
     {
         return $this->categoryPromo;
     }
-    public function isCategoryPromo()
+    public function hasCategoryPromo()
+    {
+        return $this->categoryPromo;
+    }
+    public function hasCategory()
     {
         return $this->categoryPromo;
     }

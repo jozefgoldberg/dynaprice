@@ -15,6 +15,7 @@ use Dpp\AjaxServeurBundle\Entity\PromoCodeInterface;
  * @ORM\Table()
  * @ORM\Table(name="dpp_category")
  * @ORM\Entity(repositoryClass="Dpp\CustomersBundle\Entity\CategoryRepository")
+ * @UniqueEntity({"customer" , "urlRef"} , message="Cette reference existe pour ce client")
  */
 class Category implements PromoCodeInterface
 {
@@ -373,6 +374,20 @@ class Category implements PromoCodeInterface
         } else {
             return null;
         }   
+    }
+
+    /* 
+    * get new with default children
+    */
+    public static function getWithDefault(Customer $customer, $urlRef, Category $parent=null) {
+        $category = new Category(); // Création de l'entité
+        $category->setCustomer($customer);
+        $category->setParent($parent);
+        $category->setUrlRef($urlRef);
+        $category->setPricingType(0);
+        $category->setName($urlRef);
+        $category->setState(1);
+        return $category; 
     }
     
 }

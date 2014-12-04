@@ -305,7 +305,8 @@ class Product implements PromoCodeInterface
             return null;
         }   
     }
-    public static function create(Customer $customer, $urlRef) {
+    
+    public static function getWithDefault(Customer $customer, $urlRef) {
         $product = new Product(); // Création de l'entité
         $product->setCustomer($customer);
         $product->setUrlRef($urlRef);

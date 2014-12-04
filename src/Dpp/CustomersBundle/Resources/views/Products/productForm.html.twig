@@ -7,91 +7,76 @@
     <div class="txtjaune">{{ flashMessage }}</div>
 {% endfor %} 
 <div class="txtred">{{ form_errors(form.urlRef) }}</div>
+
 <div class="row">
-        <form method="post"  Onsubmit="return DppComputeTabCode($('#dpp_customersbundle_product_producttype_promoCodes'))"   {{ form_enctype(form) }}>
-          <div class="txtred">{{ form_errors(form) }}</div>
+    <form method="post"  Onsubmit="return DppComputeTabCode($('#dpp_customersbundle_product_producttype_promoCodes'))"   {{ form_enctype(form) }}>
+        <div class="txtred">{{ form_errors(form) }}</div>
+        <div class="zone-bordered ">
             <div class="row">
-                <div class="span1"></div>
-                <div class="span5">
-                    {{ form_row(form.customerName) }} 
-                </div>
-                <div class="span5">
-                    
-                </div>
+                <div class="col-lg-2 col-lg-offset-1">{{ form_label(form.customerName) }}</div><div class="col-lg-3">{{ form_widget(form.customerName) }}</div>
+                <div class="col-lg-2 "></div><div class="col-lg-2"></div>
             </div>
             <div class="row">
-                <div class="span1"></div>
-                <div class="span5">
-                    {{ form_row(form.name) }} 
-                </div>
-                <div class="span5">
-                    {{ form_label(form.urlRef) }} {{ form_widget(form.urlRef) }}  
-                </div>
+                <div class="col-lg-2 col-lg-offset-1">{{ form_label(form.name) }}</div><div class="col-lg-3">{{ form_widget(form.name) }}</div>
+                <div class="col-lg-2 ">{{ form_label(form.urlRef) }}</div><div class="col-lg-2">{{ form_widget(form.urlRef) }}  </div>
             </div>
             <div class="row">
-                <div class="span1"></div>
-                <div class="span5">
-                    {{ form_row(form.pricingType) }} 
-                </div>
-                <div class="span5">
-                    {{ form_row(form.state) }} 
-                </div>
+                <div class="col-lg-2 col-lg-offset-1">{{ form_label(form.pricingType) }}</div><div class="col-lg-3">{{ form_widget(form.pricingType) }}</div>
+                <div class="col-lg-2">{{ form_label(form.state) }}</div><div class="col-lg-2">{{ form_widget(form.state) }}</div>
             </div>
             {{ form_rest(form) }}
-            <div class="row">
-                <div class="span2"></div>
-                <div class="span5">
-                    <H4>{{ "Dpp.global.promoCodes"|trans }}</H4>
-                </div>    
+        </div>
+        <div class="row">
+            <h4 class="txtcentre">{{ "Dpp.global.promoCodes"|trans }}</h4>
+        </div>    
+        <div class="row">
+            <div class="col-lg-2 col-lg-offset-2">Nb des visites</div>
+            <div class="col-lg-2 col-lg-offset-1">Code promo</div>
+            <div class="col-lg-2 col-lg-offset-1">Message</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-1 col-lg-offset-2"><input type="number" name="visites" id="visites" /></div>
+            <div class="col-lg-1 col-lg-offset-2"><input type="text" name="code" id="code" /></div>
+            <div class="col-lg-2 col-lg-offset-2"><input type="text"  size="64" name="message" id="message" /></div>
+            <div class="col-lg-2 "><a href="#" class="grph-btn" onclick="DppAddRow($('#dpp_customersbundle_customers_customertype_promoCodes'));">
+                        <img src="/dynaprice/web/img/icones/add_obj.gif">&nbsp{{ "Dpp.global.add_code"|trans }}</a>                
             </div>
-            <div class="row">
-                <div class="span2">&nbsp</div>
-                <div class="span2">Nb des visites</div>
-                <div class="span2">Code promo</div>
-                <div class="span3">Message</div>
+        </div><br>
+        <div class="row">
+            <div class="col-lg-1 " ></div>   
+            <div class="table-responsive ">
+                <table id="tableau" class="table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="col-lg-1">Nb Visites</th>
+                            <th class="col-lg-1">Code</th>
+                            <th class="col-lg-2">Texte</th>
+                            <th class="col-lg-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if tabPromoCodes %}
+                        {% for ligCode in tabPromoCodes %}
+                        <tr>
+                            <td>{{ ligCode[0] }}</td>
+                            <td>{{ ligCode[1] }}</td>
+                            <td>{{ ligCode[2] }}</td>
+                            <td><a href"#"  onclick="DppDeleteRow(this);" class="btn-default"><img src="/dynaprice/web/img/icones/delete_obj.gif">&nbsp{{ "Dpp.global.delete"|trans }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table><br><br>
             </div>
-            <div class="row">
-                <div class="span2">&nbsp</div>
-                <div class="span2"><input type="number" name="visites" id="visites" /></div>
-                <div class="span2"><input type="text" name="code" id="code" /></div>
-                <div class="span3"><input type="text"  size="64" name="message" id="message" /></div>
-                <div class="span3"><input type="button" class="btn " onclick="DppAddRow($('#dpp_customersbundle_product_producttype_promoCodes'));" value="Ajouter un code"/></div>
+           <div class="col-lg-1 " ></div>  
+        </div>
+        <div class="row">
+            <div class="col-lg-2"> 
+                <a href=" {{ returnUrl }} " class="grph-btn "><i class="icon-chevron-left"></i>Cancel</a>        
             </div>
-            <div class="row">
-                <div class="span2">&nbsp</div>
-                <div class="span10">
-                    <table id="tableau" border="1">
-                        <thead>
-                            <tr>
-                                <th class="span1">Nb Visites</th>
-                                <th class="span1">Code</th>
-                                <th class="span4">Texte</th>
-                                <th class="span1"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if tabPromoCodes %}
-                                {% for ligCode in tabPromoCodes %}
-                                    <tr>
-                                        <td>{{ ligCode[0] }}</td>
-                                        <td>{{ ligCode[1] }}</td>
-                                        <td>{{ ligCode[2] }}</td>
-                                        <td><a href"#"  onclick="DppDeleteRow(this);"><img src="/dynaprice/web/img/delete_obj.gif"></a></td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                        </tbody>
-                    </table><br><br>
-                </div>
+            <div class="col-lg-2 col-lg-offset-2"> 
+                <input type="submit" class="btn pull-right btn-primary"  />      
             </div>
-            <div class="row">
-                <div class="span2">&nbsp</div>
-                <div class="span2"> 
-                    <a href=" {{ returnUrl }} " class="btn "><i class="icon-chevron-left"></i>Cancel</a>        
-                </div>
-                <div class="span2"> 
-                    <input type="submit" class="btn btn-primary" />
-                </div>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
