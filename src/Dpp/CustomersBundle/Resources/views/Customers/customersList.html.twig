@@ -21,24 +21,37 @@
                         <th class="col-lg-2">{{ 'Dpp.customer.name'|trans }}</th>
                         <th class="col-lg-2">{{ 'Dpp.customer.domaine'|trans }}</th>
                         <th class="col-lg-1"></th>
-                        <th class="col-lg-1"></th>
+                        
                     </tr>
                 </thead>   
                 <tbody>
                 {% for customer in customers %}
                 <tr>
                     <td>{{ customer.name }}</td>
-                    <td>{{ customer.domaine }}</td>      
-                    <td><a href="{{ path('dpp_customers_update', {'customerRef': customer.domaine }) }}" class="grph-btn" >
-                        <img src="/dynaprice/web/img/icones/write_obj.gif">&nbsp{{ "Dpp.global.edit"|trans }}
-                    </a></td>
-                    <td><a href="{{ path('dpp_customers_delete', {'customerRef': customer.domaine }) }}" class="btn-default" onclick='return(confirm("{{ 'Dpp.global.confirm_delete'|trans}}" ))' >
-                        <img src="/dynaprice/web/img/icones/delete_obj.gif">&nbsp{{ "Dpp.global.delete"|trans }}
-                    </a></td>
+                    <td>{{ customer.domaine }}</td>  
+                    <td>
+                        <div class="btn-group ">
+                            <button type="button" class="btn grph-btn "><b>Actions</b></button>
+                            <button type="button" class="grph-btn pull-right dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ path('dpp_customers_update', {'customerRef': customer.domaine }) }}">
+                                    <img src="/dynaprice/web/img/icones/write_obj.gif">&nbsp;{{ "Dpp.global.edit"|trans }}</a></li>
+                                <li><a href="{{ path('dpp_categorys_customer', {'customerRef': customer.domaine }) }}">
+                                    <img src="/dynaprice/web/img/icones/types.gif">&nbsp;{{ "Dpp.customer.liste_categorys"|trans }}</a></li>
+                                <li><a href="{{ path('dpp_products_customer', {'customerRef': customer.domaine }) }}">
+                                    <img src="/dynaprice/web/img/icones/pack_sbook.gif">&nbsp;{{ "Dpp.customer.liste_products"|trans }}</a></li>
+                                <li><a href="{{ path('dpp_customers_delete', {'customerRef': customer.domaine }) }}" onclick='return(confirm("{{ 'Dpp.global.confirm_delete'|trans}}" ))' >
+                                <img src="/dynaprice/web/img/icones/trash.gif">&nbsp;{{ "Dpp.global.delete"|trans }}</a></li>
+                            </ul>
+                        </div> 
+                    </td>  
                 </tr>
                 {% endfor %}
                 </tbody>
-            </table><br>
+            </table><br><br><br><br><br><br>
             </div>
         {% else %}
             {{ 'Dpp.customer.notfound'|trans }}                                                 

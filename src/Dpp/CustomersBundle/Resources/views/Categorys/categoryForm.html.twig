@@ -1,4 +1,4 @@
-{# src/Dpp/CustomersBundle/Resources/views/Products/productForm.html.twig #}
+{# src/Dpp/CustomersBundle/Resources/views/Categorys/categoryForm.html.twig #}
  {% form_theme form 'DppCustomersBundle:Default:fields.html.twig' %}
  
 <script type="text/javascript" src="{{ asset('js/dppTabPromo.js') }}"></script>
@@ -6,19 +6,23 @@
 {% for flashMessage in app.session.flashbag.get('info') %}
     <div class="txtjaune">{{ flashMessage }}</div>
 {% endfor %} 
-<div class="txtred">{{ form_errors(form.urlRef) }}</div>
+<div class="txtred">{{ form_errors(form.urlRef) }} {{ form_errors(form.parent) }}</div>
 
 <div class="row">
-    <form method="post"  Onsubmit="return DppComputeTabCode($('#dpp_customersbundle_product_producttype_promoCodes'))"   {{ form_enctype(form) }}>
+    <form method="post"  Onsubmit="return DppComputeTabCode($('#dpp_customersbundle_category_categorytype_promoCodes'))"   {{ form_enctype(form) }}>
         <div class="txtred">{{ form_errors(form) }}</div>
         <div class="zone-bordered ">
             <div class="row">
                 <div class="col-lg-2 col-lg-offset-1">{{ form_label(form.customerName) }}</div><div class="col-lg-3">{{ form_widget(form.customerName) }}</div>
-                <div class="col-lg-2 ">{{ form_label(form.category) }}</div><div class="col-lg-2">{{ form_widget(form.category) }}</div>
+                <div class="col-lg-2 "></div><div class="col-lg-2"></div>
             </div>
             <div class="row">
                 <div class="col-lg-2 col-lg-offset-1">{{ form_label(form.name) }}</div><div class="col-lg-3">{{ form_widget(form.name) }}</div>
                 <div class="col-lg-2 ">{{ form_label(form.urlRef) }}</div><div class="col-lg-2">{{ form_widget(form.urlRef) }}  </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-lg-offset-1">{{ form_label(form.parent) }}</div><div class="col-lg-3">{{ form_widget(form.parent) }}</div>
+                <div class="col-lg-2 "></div><div class="col-lg-2"></div>
             </div>
             <div class="row">
                 <div class="col-lg-2 col-lg-offset-1">{{ form_label(form.pricingType) }}</div><div class="col-lg-3">{{ form_widget(form.pricingType) }}</div>
@@ -38,7 +42,7 @@
             <div class="col-lg-1 col-lg-offset-2"><input type="number" name="visites" id="visites" /></div>
             <div class="col-lg-1 col-lg-offset-2"><input type="text" name="code" id="code" /></div>
             <div class="col-lg-2 col-lg-offset-2"><input type="text"  size="64" name="message" id="message" /></div>
-            <div class="col-lg-2 "><a href="#" class="grph-btn" onclick="DppAddRow($('#dpp_customersbundle_customers_customertype_promoCodes'));">
+            <div class="col-lg-2 "><a href="#" class="grph-btn" onclick="DppAddRow($('#dpp_customersbundle_category_categorytype_promoCodes'));">
                         <img src="/dynaprice/web/img/icones/add_obj.gif">&nbsp{{ "Dpp.global.add_code"|trans }}</a>                
             </div>
         </div><br>

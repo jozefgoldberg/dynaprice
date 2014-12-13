@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Dpp\BuyersBundle\Entity\Buyer;
 use Dpp\BuyersBundle\Entity\BuyerCustomer;
 use Dpp\BuyersBundle\Entity\BuyerProduct;
+use Dpp\BuyersBundle\Entity\BuyerCategory;
 use Dpp\CustomersBundle\Entity\Customer;
 use Dpp\CustomersBundle\Entity\Product;
 use Dpp\CustomersBundle\Entity\Category;
@@ -20,13 +21,15 @@ class AjaxServeurController extends Controller
     protected $product = null;
     protected $category = null;
     protected $buyer = null;
+    protected $purchase = FALSE;
+    protected $message = null;
     
     /**
     * todfo Constructor make to get entity manager
     */
 
-    public function getResponse($msg) {
-        $response = new Response($msg,200,array('content-type' => 'text/xml'));
+    public function getResponse() {
+        $response = new Response($this->message,200,array('content-type' => 'text/xml'));
         $response->headers->set('Access-Control-Allow-Origin','*');
         return $response;       
     }
@@ -44,39 +47,78 @@ class AjaxServeurController extends Controller
             $log->setBuyer($this->buyer);
             if (!$this->product == null) {$log->setProduct($this->product);}
             if (!$this->category == null) {$log->setCategory($this->category);}
+            $log->setPurchase($this->purchase);
             $this->entityManager->persist($log);
         }
     }
     
     
     /**
-    * Visit Buyer from one customer Ajax
+    * Visit Buyer from all page in customer site 
     */    
     public function accessBruyerFromCustomerAction($domaine, $uuid) {
         $this->customer = $this->getCustomerByDomaine($domaine); 
         if (!$this->customer == null) {  
             $this->buyer = $this->getBuyerByUid($uuid);  // get buyer or creat it if no exist
-            $buyerCustomer= $this->getBuyerCustomer($this->customer, $this->buyer);// get buyerCustomer or creat it if no exist
+            $buyerCustomer= $this->getBuyerCustomer();// get buyerCustomer or creat it if no exist
             $visites = $buyerCustomer->getTotalAccess();
             $tabPromo = $this->customer->getPromoCodesAsArray();
-            $msg = null;
             if ($this->customer->isGlobalPromo() && (!$tabPromo === FALSE)) { 
-                $msg = $this->getPromoMessage($this->customer, $tabPromo, $this->customer->getPricingType(), $visites);
+                $this->message = $this->getPromoMessage( $tabPromo, $this->customer->getPricingType(), $visites);
             }
         }
-        if ($msg == null) { 
-            $msg = '<resp></resp>';
+        if ($this->message == null) { 
+            $this->message = '<resp></resp>';
         }
-        return $this->getResponse($msg);   
+        return $this->getResponse($this->message);   
+    }
+    /**
+    * Visit Category page  
+    */    
+    public function accessCategoryAction($domaine, $uuid, $urlRef) {
+        $this->customer = $this->getCustomerByDomaine($domaine); 
+        $categoryRef = null;
+        if (!$this->customer == null) {    
+            $pos = strrpos($urlRef, "+");
+            if (!$pos === FALSE) {
+                $categoryRef = substr($urlRef,$pos+1); 
+            } 
+            if (!$categoryRef == null) {
+                $this->category = $this->getCategoryByReference($categoryRef);
+            }      
+            if (!$this->category == null && $this->category->getState() > 0) {  
+                $this->buyer = $this->getBuyerByUid($uuid);  // get buyer or creat it if no exist
+                $buyerCustomer = $this->getBuyerCustomer($this->customer, $this->buyer);// get buyerCustomer or creat it if no exist            
+                $buyerCategory = $this->getBuyerCategory($this->buyer, $this->category);// get buyerCategory or creat it if no exist
+                $visites = $buyerCategory->getTotalAccess();
+                $pricingType = 0;
+                if (!$this->customer->isGlobalPromo()) { // pas de message category si promo général
+                    if ($this->category->getPricingType() == 0) {
+                        $pricingType = $this->customer->getPricingType();
+                    }
+                    $tabPromo = $this->category->getPromoCodesAsArray();
+                    if ($tabPromo === FALSE) {
+                        $tabPromo = $this->customer->getPromoCodesAsArray();
+                    }
+                    if (!$tabPromo === FALSE) {
+                        $this->message = $this->getPromoMessage( $tabPromo, $pricingType, $visites);
+                    }
+                }
+            }
+        }
+        if ($this->message == null) { 
+            $this->message = '<resp></resp>';
+        }
+        return $this->getResponse($this->message);   
     }
     
     /**
-    * Visit product page  Ajax
+    * Visit product page  
     */    
     public function accessProductAction($domaine, $uuid, $urlRef) {
         $this->customer = $this->getCustomerByDomaine($domaine); 
         $prodRef = null;
-        $categoryRef = null;
+        $categoryName= null;
         if (!$this->customer == null) {    
             if ($this->customer->hasCategoryPromo()) {
                 $pos = strrpos($urlRef, "+");
@@ -84,7 +126,7 @@ class AjaxServeurController extends Controller
                     $prodRef = substr($urlRef,$pos+1); 
                     $pos1 = strrpos(substr($urlRef,0,-1*(strlen($prodRef)+1)),"+");
                     if (!$pos1 === FALSE) {
-                        $categoryRef = substr($urlRef,$pos1+1,$pos-$pos1-1);
+                        $categoryName = substr($urlRef,$pos1+1,$pos-$pos1-1);
                     }
                 }
                 
@@ -95,12 +137,12 @@ class AjaxServeurController extends Controller
                 } 
             }
             if (!$prodRef == null) {
-                if (!$categoryRef == null) {
-                    $this->category = $this->getCategoryByReference($this->customer, $categoryRef);
+                if (!$categoryName == null) {
+                    $this->category = $this->getCategoryByName($categoryName);
                 }      
-                $this->product =  $this->getProductByReference($this->customer, $prodRef, $this->category); 
+                $this->product =  $this->getProductByReference($prodRef, $this->category); 
             }
-            $msg = null;
+            $this->message = null;
             if (!$this->product == null && $this->product->getState() > 0) {  
                 $this->buyer = $this->getBuyerByUid($uuid);  // get buyer or creat it if no exist
                 $buyerCustomer = $this->getBuyerCustomer($this->customer, $this->buyer);// get buyerCustomer or creat it if no exist            
@@ -116,15 +158,15 @@ class AjaxServeurController extends Controller
                         $tabPromo = $this->customer->getPromoCodesAsArray();
                     }
                     if (!$tabPromo === FALSE) {
-                        $msg = $this->getPromoMessage($this->customer, $tabPromo, $pricingType, $visites);
+                        $this->message = $this->getPromoMessage( $tabPromo, $pricingType, $visites);
                     }
                 }
             }
         }
-        if ($msg == null) { 
-            $msg = '<resp></resp>';
+        if ($this->message == null) { 
+            $this->message = '<resp></resp>';
         }
-        return $this->getResponse($msg);   
+        return $this->getResponse($this->message);   
     }
     
     /**
@@ -136,7 +178,7 @@ class AjaxServeurController extends Controller
         if ($this->entityManager == null) { 
             $this->entityManager = $this->getDoctrine()->getManager();
         }
-        $msg = '<resp></resp>';
+        $this->message = '<resp></resp>';
         $this->customer = $this->getCustomerByDomaine($domaine); 
         if (!$this->customer == null) {   
             $this->buyer = $this->getBuyerByUid($uuid);  // get buyer or creat it if no exist
@@ -144,9 +186,11 @@ class AjaxServeurController extends Controller
             //
             $buyerCustomer->makePurchase();
             $this->entityManager->getRepository('DppBuyersBundle:BuyerProduct')->removeForBuyerCustomer($buyerCustomer);
+            $this->purchase = True;
+            $this->logAction();
             $this->entityManager->flush();
         }
-        return $this->getResponse($msg);   
+        return $this->getResponse($this->message);   
     }
     
     /**
@@ -168,17 +212,17 @@ class AjaxServeurController extends Controller
     * Get product by reference
     * if not existe and customer is autoAcquisition create is
     */ 
-    private function getProductByReference(Customer $customer,  $prodRef, Category $category=null) {
+    private function getProductByReference($prodRef, Category $category=null) {
         if ($this->entityManager == null) { 
             $this->entityManager = $this->getDoctrine()->getManager();
         }
         $this->category = $category;
-        $product = $this->entityManager->getRepository('DppCustomersBundle:Product')->findOneBy(array('customer'=>$customer, 'urlRef' => $prodRef));
+        $product = $this->entityManager->getRepository('DppCustomersBundle:Product')->findOneBy(array('customer'=>$this->customer, 'urlRef' => $prodRef));
         if ($product == null) {
-            if ($customer->isAutoAcquisition()) {       
+            if ($this->customer->isAutoAcquisition()) {       
                 $product = Product::getWithDefault($this->customer,  $prodRef);
                 if (!$this->category==null) {
-                    $this->product->setCategory($this->category);
+                    $product->setCategory($this->category);
                 }
                 $this->entityManager->persist($product);
                 $this->entityManager->flush();
@@ -195,19 +239,45 @@ class AjaxServeurController extends Controller
     
     /**
     * Get category by reference
-    * if not existe and customer is autoAcquisition create is
+    * if not existe  verify by name if existe update autherwhise  create it
     */ 
-    private function getCategoryByReference(Customer $customer,  $categoryRef) {
+    private function getCategoryByReference($categoryRef) {
         if ($this->entityManager == null) { 
             $this->entityManager = $this->getDoctrine()->getManager();
         }
-        $category = $this->entityManager->getRepository('DppCustomersBundle:Category')->findOneBy(array('customer'=>$customer, 'urlRef' => $categoryRef));
+        $category = $this->entityManager->getRepository('DppCustomersBundle:Category')->findOneBy(array('customer'=>$this->customer, 'urlRef' => $categoryRef));
         if ($category == null) {
-            if ($customer->isAutoAcquisition()) {       
-                $category = Category::getWithDefault($customer,  $categoryRef);
+        // verify by name 
+            $pos = strpos($categoryRef, '-');
+            if (!$pos === FALSE) {
+                $name = substr($categoryRef, $pos+1);
+                $category = $this->getCategoryByName($name);
+                if (!$category == null) {
+                    $category->setUrlRef($categoryRef);
+                    $this->entityManager->persist($category);
+                    $this->entityManager->flush();
+                }
+            } else {      
+                $category = Category::getWithDefault($this->customer,  $categoryRef);
                 $this->entityManager->persist($category);
                 $this->entityManager->flush();
-            } 
+            }
+        }
+        return $category;
+    }   
+    /**
+    * Get category by name (acces from product )
+    * if not existe and customer is autoAcquisition create is
+    */ 
+    private function getCategoryByName($name) {
+        if ($this->entityManager == null) { 
+            $this->entityManager = $this->getDoctrine()->getManager();
+        }
+        $category = $this->entityManager->getRepository('DppCustomersBundle:Category')->findOneBy(array('customer'=>$this->customer, 'name' => $name));
+        if ($category == null) {      
+            $category = Category::getWithDefault($this->customer,  $name);
+            $this->entityManager->persist($category);
+            $this->entityManager->flush();
         }
         return $category;
     }   
@@ -238,84 +308,103 @@ class AjaxServeurController extends Controller
     /**
     * get BuyerCustomer if no exist creat it
     */
-    private function getBuyerCustomer(Customer $customer, Buyer $buyer) {
+    private function getBuyerCustomer() {
         if ($this->entityManager == null) { 
             $this->entityManager = $this->getDoctrine()->getManager();
         }
         $date = new \DateTime('now');
-        $bcList = $this->entityManager->getRepository('DppBuyersBundle:BuyerCustomer')->findBy(array('customer' => $customer,'buyer'=> $buyer ));
-        if ($bcList == null) {
-            $bc = BuyerCustomer::getWithDefault($customer, $buyer); 
-            $this->entityManager->persist($bc);
+        $buyerCustomer = $this->entityManager->getRepository('DppBuyersBundle:BuyerCustomer')->findOneBy(array('customer' => $this->customer,'buyer'=> $this->buyer ));
+        if ($buyerCustomer == null) {
+            $buyerCustomer = BuyerCustomer::getWithDefault($this->customer, $this->buyer); 
+            $this->entityManager->persist($buyerCustomer);
             $this->logAction();
         } else {
-            $bc = $bcList[0];
-            $ts = $date->getTimestamp() - $bc->getLastAccess()->getTimestamp();  
+            $ts = $date->getTimestamp() - $buyerCustomer->getLastAccess()->getTimestamp();  
             $ts = $ts / 3600; // en heures            
-            if ($ts > $customer->getVisitTimeInterval() ) {
-                $bc->setTotalAccess($bc->getTotalAccess()+1);
-                $bc->setLastAccess($date);
+            if ($ts > $this->customer->getVisitTimeInterval() ) {
+                $buyerCustomer->setTotalAccess($buyerCustomer->getTotalAccess()+1);
+                $buyerCustomer->setLastAccess($date);
                 $this->logAction();
             }
         }
         $this->entityManager->flush();
-        return $bc;
+        return $buyerCustomer;
     }   
     
     /**
-    * get BuyerProduct if no exist creat it
+    * get BuyerCategory if no exist creat it
     */
-    private function getBuyerProduct(Buyer $buyer, Product $product) {
+    private function getBuyerCategory() {
         if ($this->entityManager == null) { 
             $this->entityManager = $this->getDoctrine()->getManager();
         }
         $date = new \DateTime('now');
-        $bp = $this->entityManager->getRepository('DppBuyersBundle:BuyerProduct')->findOneBy(array('buyer'=> $buyer, 'product' => $product ));
-        if ($bp == null) {
-            $bp = new BuyerProduct(); 
-            $bp->setProduct($product);
-            $bp->setBuyer($buyer);
-            $bp->setFirstAccess($date);
-            $bp->setLastAccess($date);
-            $bp->setTotalAccess(1);
-            $bp->setStatus(0);
-            $this->entityManager->persist($bp);
+        $buyerCategory = $this->entityManager->getRepository('DppBuyersBundle:BuyerCategory')->findOneBy(array('buyer'=> $this->buyer, 'category' => $this->category ));
+        if ($buyerCategory == null) {
+            $buyerCategory = BuyerCategory::getWithDefault($this->buyer, $this->category); 
+            $this->entityManager->persist($buyerCategory);
             $this->logAction();
         } else {
-            $ts = $date->getTimestamp() - $bp->getLastAccess()->getTimestamp();     
+            $ts = $date->getTimestamp() - $buyerCategory->getLastAccess()->getTimestamp();     
             $ts = $ts / 3600; // en heures
-            if ($ts > $product->getCustomer()->getVisitTimeInterval() ) {
-                $bp->setTotalAccess($bp->getTotalAccess()+1);
-                $bp->setLastAccess($date);
+            if ($ts > $this->customer->getVisitTimeInterval() ) {
+                $buyerCategory->setTotalAccess($buyerCategory->getTotalAccess()+1);
+                $buyerCategory->setLastAccess($date); 
+                $this->logAction();                
+            }
+        }        
+        $this->entityManager->flush();
+        return $buyerCategory;
+    }   
+    /**
+    * get BuyerProduct if no exist creat it
+    */
+    private function getBuyerProduct() {
+        if ($this->entityManager == null) { 
+            $this->entityManager = $this->getDoctrine()->getManager();
+        }
+        $date = new \DateTime('now');
+        $buyerProduct = $this->entityManager->getRepository('DppBuyersBundle:BuyerProduct')->findOneBy(array('buyer'=> $this->buyer, 'product' => $this->product ));
+        if ($buyerProduct == null) {
+            $buyerProduct = BuyerProduct::getWithDefault($this->buyer, $this->product); 
+            $this->entityManager->persist($buyerProduct);
+            $this->logAction();
+        } else {
+            $ts = $date->getTimestamp() - $buyerProduct->getLastAccess()->getTimestamp();     
+            $ts = $ts / 3600; // en heures
+            if ($ts > $this->customer->getVisitTimeInterval() ) {
+                $buyerProduct->setTotalAccess($bp->getTotalAccess()+1);
+                $buyerProduct->setLastAccess($date);
+                $this->logAction();
             }
         }
         $this->entityManager->flush();
-        return $bp;
+        return $buyerProduct;
     }   
        
-    public function getPromoMessage($customer, $tabPromo, $pricingType, $visites) {
-        $msg = null;
+    public function getPromoMessage($tabPromo, $pricingType, $visites) {
+        $this->message = null;
         $codePromo = null;
         foreach(array_reverse($tabPromo) as $ligneCode) {
             if ($pricingType == 1) {
                 if ($ligneCode[0] == $visites) {
                     $codePromo = $ligneCode[1];
-                    $msg = $ligneCode[2];
+                    $this->message = $ligneCode[2];
                     break;
                 }
             } else {
                 if ($ligneCode[0] <= $visites) {
                     $codePromo = $ligneCode[1];
-                    $msg = $ligneCode[2];
+                    $this->message = $ligneCode[2];
                     break;
                 }
             }
         }
         if (!$codePromo == null) {
-            if ($msg == null) {
-                $msg = $customer->getDefaultMsg();
+            if ($this->message == null) {
+                $this->message = $this->customer->getDefaultMsg();
             }                
-            $pos = strpos($msg,'[$visite$]');
+            $pos = strpos($this->message,'[$visite$]');
             if (!$pos===FALSE) {
                 $repstr = strval($visites);
                 if ($visites > 1){
@@ -323,12 +412,12 @@ class AjaxServeurController extends Controller
                 }else { 
                     $repstr = $repstr+'ére ';
                 }
-                $msg = str_replace('[$visite$]',$repstr,$msg);
+                $this->message = str_replace('[$visite$]',$repstr,$this->message);
             }
-            $msg = str_replace('[$code$]',$codePromo,$msg);
-            $msg = '<resp><msg>'.$msg.'</msg></resp>';                     
+            $this->message = str_replace('[$code$]',$codePromo,$this->message);
+            $this->message = '<resp><msg>'.$this->message.'</msg></resp>';                     
         }
-        return $msg;
+        return $this->message;
     }
     
     

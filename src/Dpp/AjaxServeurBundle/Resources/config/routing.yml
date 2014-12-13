@@ -9,3 +9,6 @@ dpp_ajax_serveur_achat:
 dpp_ajax_serveur_product:
     path:     /product/{domaine}/{uuid}/{urlRef}
     defaults: { _controller: DppAjaxServeurBundle:AjaxServeur:accessProduct}
+dpp_ajax_serveur_category:
+    path:     /category/{domaine}/{uuid}/{urlRef}
+    defaults: { _controller: DppAjaxServeurBundle:AjaxServeur:accessCategory}

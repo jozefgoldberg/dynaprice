@@ -73,10 +73,12 @@ class CustomerController extends Controller
             } 
         }
         $returnUrl = $this->generateUrl('dpp_customers_list');
-        $listProdUrl = $this->generateUrl('dpp_products_customer', array('customerRef' => $customer->getDomaine()));
+        $listCategorysUrl = $this->generateUrl('dpp_categorys_customer', array('customerRef' => $customer->getDomaine()));
+        $listProductsUrl = $this->generateUrl('dpp_products_customer', array('customerRef' => $customer->getDomaine()));
         return $this->render('DppCustomersBundle:Customers:customerUpdate.html.twig', array('form' => $form->createView(),
                                                                                     'returnUrl' => $returnUrl,
-                                                                                    'listProdUrl' => $listProdUrl,
+                                                                                    'listProductsUrl' => $listProductsUrl,
+                                                                                    'listCategorysUrl' => $listCategorysUrl,
                                                                                     'tabPromoCodes' => $tabPromoCodes));
     }
     

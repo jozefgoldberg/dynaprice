@@ -1,0 +1,21 @@
+dpp_stats_demoligne:
+    path:     /demoLigne
+    defaults: { _controller: DppStatsBundle:Default:ligneChart }
+    
+dpp_stats_demobarre:
+    path:     /demoBarre
+    defaults: { _controller: DppStatsBundle:Default:barreChart }
+    
+    
+dpp_stats_demoall:
+    path:     /demoAll
+    defaults: { _controller: DppStatsBundle:Default:allChart }
+    
+dpp_stats_homepage:
+    path:     /
+    defaults: { _controller: DppStatsBundle:CustomerStats:index }
+
+dpp_stats_customer:
+    path:     /{customerRef}
+    defaults: { _controller: DppStatsBundle:CustomerStats:customerStats }
+

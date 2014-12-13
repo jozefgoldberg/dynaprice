@@ -37,11 +37,38 @@ body  {
 .table-bordered td{
     padding: 5px;
 }
+.table-interne {
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 75%;
+}
+
 
 .table-striped tbody > tr:nth-child(odd) > td,
 .table-striped tbody > tr:nth-child(odd) > th {
   background-color: #666666;
 }
+.table-interne {
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 75%;
+}
+.table-interne  tbody > tr:nth-child(odd) > td ,
+.table-interne  tbody > tr:nth-child(odd) > th  {
+  background-color: #ffffff;
+}
+
+.table-interne > thead > tr > th,
+.table-interne > tbody > tr > th,
+.table-interne > tfoot > tr > th,
+.table-interne > thead > tr > td,
+.table-interne > tbody > tr > td,
+.table-interne > tfoot > tr > td {
+  border: 1px solid #ddd;
+}
+
 .spangris {
     background-color: #eeeeee;
 }

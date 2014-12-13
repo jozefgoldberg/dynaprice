@@ -3,17 +3,16 @@
 namespace Dpp\BuyersBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Dpp\CustomersBundle\Entity\Product;
-use Dpp\CustomersBundle\Entity\Customer;
+use Dpp\CustomersBundle\Entity\Category;
 use Dpp\BuyersBundle\Entity\Buyer;
 
 /**
- * BuyerProduct
+ * BuyerCategory
  * @ORM\Table()
- * @ORM\Table(name="dpp_buyer_product")
- * @ORM\Entity(repositoryClass="Dpp\BuyersBundle\Entity\BuyerProductRepository")
+ * @ORM\Table(name="dpp_buyer_category")
+ * @ORM\Entity(repositoryClass="Dpp\BuyersBundle\Entity\BuyerCategoryRepository")
  */
-class BuyerProduct
+class BuyerCategory
 {
     /**
      * @var integer
@@ -31,10 +30,10 @@ class BuyerProduct
     private $buyer;
 
     /**
-    * @ORM\ManyToOne(targetEntity="Dpp\CustomersBundle\Entity\Product")
+    * @ORM\ManyToOne(targetEntity="Dpp\CustomersBundle\Entity\Category")
     * @ORM\JoinColumn(nullable=false)
     */
-    private $product;
+    private $category;
     
     /**
      * @var integer
@@ -78,7 +77,7 @@ class BuyerProduct
      * Set status
      *
      * @param integer $status
-     * @return BuyerProduct
+     * @return BuyerCategory
      */
     public function setStatus($status)
     {
@@ -100,7 +99,7 @@ class BuyerProduct
      * Set firstAccess
      *
      * @param \DateTime $firstAccess
-     * @return BuyerProduct
+     * @return BuyerCategory
      */
     public function setFirstAccess($firstAccess)
     {
@@ -123,7 +122,7 @@ class BuyerProduct
      * Set lastAccess
      *
      * @param \DateTime $lastAccess
-     * @return BuyerProduct
+     * @return BuyerCategory
      */
     public function setLastAccess($lastAccess)
     {
@@ -146,7 +145,7 @@ class BuyerProduct
      * Set totalAccess
      *
      * @param integer $totalAccess
-     * @return BuyerProduct
+     * @return BuyerCategory
      */
     public function setTotalAccess($totalAccess)
     {
@@ -169,7 +168,7 @@ class BuyerProduct
      * Set buyer
      *
      * @param Buyer $buyer
-     * @return BuyerProduct
+     * @return BuyerCategory
      */
     public function setBuyer(Buyer $buyer)
     {
@@ -189,42 +188,42 @@ class BuyerProduct
     }
     
     /**
-     * Set product
+     * Set Category
      *
-     * @param Product $product
-     * @return BuyerProduct
+     * @param Category $Category
+     * @return BuyerCategory
      */
-    public function setProduct(Product $product)
+    public function setCategory(Category $category)
     {
-        $this->product = $product;
+        $this->category = $category;
 
         return $this;
     }
 
     /**
-     * Get product
+     * Get Category
      *
-     * @return Product
+     * @return Category
      */
-    public function getProduct()
+    public function getCategory()
     {
-        return $this->product;
+        return $this->category;
     }
-   
     /*
     * Create with default
     */
-    public static function getWithDefault(Buyer $buyer, Product $product) {
+    public static function getWithDefault(Buyer $buyer, Category $category) {
         $date = new \DateTime('now');
-        $bc = new BuyerProduct(); // Création de l'entité
+        $bc = new BuyerCategory(); // Création de l'entité
         $bc->setBuyer($buyer);
-        $bc->setProduct($product);
+        $bc->setCategory($category);
         $bc->setStatus(1);
         $bc->setFirstAccess($date);
         $bc->setLastAccess($date);
         $bc->setTotalAccess(1);
         $bc->setStatus(0);
         return $bc; 
-    }   
+    }
+    
     
 }

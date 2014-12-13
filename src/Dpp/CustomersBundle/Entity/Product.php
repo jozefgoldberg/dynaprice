@@ -311,7 +311,14 @@ class Product implements PromoCodeInterface
         $product->setCustomer($customer);
         $product->setUrlRef($urlRef);
         $product->setPricingType(0);
-        $product->setName($urlRef);
+        // update change name for exemple prestashop 
+        $pos = strpos($urlRef, '-');
+        if (!$pos === FALSE) {
+            $product->setName(substr($urlRef, $pos+1));
+        } else {
+            $product->setName($urlRef);
+        }
+        
         $product->setState(1);
         return $product; 
     }

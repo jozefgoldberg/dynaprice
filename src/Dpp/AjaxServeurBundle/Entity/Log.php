@@ -56,6 +56,12 @@ class Log
     * @ORM\JoinColumn(nullable=false)
     */
     private $buyer;
+     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="purchase", type="boolean")
+     */
+    private $purchase;
     
     /* ***********************
     * setter's and geter's
@@ -161,7 +167,7 @@ class Log
     {
         return $this->product;
     }
-       /**
+    /**
      * Set buyer
      *
      * @param Buyer $buyer
@@ -182,6 +188,38 @@ class Log
     public function getBuyer()
     {
         return $this->buyer;
+    }
+    
+    /**
+     * Set purchase
+     *
+     * @param boolean $bool
+     * @return Log
+     */
+    public function setPurchase( $bool)
+    {
+        $this->purchase = $bool;
+
+        return $this;
+    }
+
+    /**
+     * Get purchase
+     *
+     * @return purchase
+     */
+    public function getPurchase()
+    {
+        return $this->purchase;
+    }
+    /**
+     * is purchase
+     *
+     * @return boolean
+     */
+    public function isPurchase()
+    {
+        return $this->purchase;
     }
     
 }

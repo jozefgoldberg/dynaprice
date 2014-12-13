@@ -1,0 +1,18 @@
+dpp_category_homepage:
+    path:     /
+    defaults: { _controller: DppCustomersBundle:Category:listByUserCustomer}
+dpp_categorys_customer:
+    path:      /{customerRef}
+    defaults:  { _controller: DppCustomersBundle:Category:listByCustomer}
+
+dpp_category_add:
+    path:      /add/{customerRef}
+    defaults:  { _controller: DppCustomersBundle:Category:create}
+
+dpp_category_edit:
+    path:      /update/{id}
+    defaults:  { _controller: DppCustomersBundle:Category:update}
+    
+dpp_category_delete:
+    path:      /delete/{id}
+    defaults:  { _controller: DppCustomersBundle:Category:delete}

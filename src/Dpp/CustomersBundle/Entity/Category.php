@@ -9,14 +9,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Dpp\CustomersBundle\Controller\AllTypeController;
 use Dpp\AjaxServeurBundle\Entity\PromoCodeInterface;
+
 /**
  * Category
  *
  * @ORM\Table()
  * @ORM\Table(name="dpp_category")
  * @ORM\Entity(repositoryClass="Dpp\CustomersBundle\Entity\CategoryRepository")
- * @UniqueEntity({"customer" , "urlRef"} , message="Cette reference existe pour ce client")
- */
+ * @UniqueEntity(fields={"customer" , "urlRef"}  , message="Cette reference existe pour ce client")
+*/
+
 class Category implements PromoCodeInterface
 {
     /**
@@ -348,6 +350,17 @@ class Category implements PromoCodeInterface
         }
         return $this->getCustomer()->getName();
     }
+     /**
+    * Get Parent name
+    * return string
+    **/
+    public function getParentName() {
+        if ($this->hasParent()) {
+            return $this->getParent()->getName();
+        } else {
+            return null;
+        }
+    }
     /** 
     * get pricing as string
     * return string
@@ -375,9 +388,47 @@ class Category implements PromoCodeInterface
             return null;
         }   
     }
+    public function validate(Context $context)
+    {
+        if (!$this->isValidParent($this, $this->getParent())) {
+            $context->addViolationAt(
+                'parent','Dpp.message.category.invalid_parent',array(), null);
+        }
+    }
+    
+    /**
+    * isValideParent
+    * @param Pmeweb\TmshBundle\Entity\project $project, Pmeweb\TmshBundle\Entity\project $parent
+    * @return boolean
+    */
+    private function isValidParent($category, $parent)
+    {
+        if ($parent == null) { return true; }
+        if ($category->getId() == $parent->getId()) { return false; }
+        $children = $category->getChildren();
+        if($children == null) {
+            return true;
+        } else {
+            $resp = true;
+            foreach ($children as $child) {
+                if ($child === $parent) {
+                    $resp = false;
+                    break;
+                }
+            }
+            if ($resp) {
+                foreach ($children as $child) {
+                    $resp = $this->isValidParent( $child, $parent);
+                    if (!$resp) break;
+                    
+                }
+            }
+        }
+        return $resp;
+    }
 
     /* 
-    * get new with default children
+    * get new with default 
     */
     public static function getWithDefault(Customer $customer, $urlRef, Category $parent=null) {
         $category = new Category(); // Création de l'entité

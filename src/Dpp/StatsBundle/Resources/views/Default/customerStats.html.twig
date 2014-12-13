@@ -1,0 +1,63 @@
+{# src\Dpp\StatsBundle\Resources\views\customerStats.html.twig #}
+
+{% extends "DppStatsBundle::layout.html.twig" %}
+
+{% block title %}
+	Demo {{ parent() }}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/obhighcharts/js/highcharts.js') }}"></script>
+    <script> 
+        function Dpp_in(name) { 
+            $('#submitDay').hide();
+            $('#submitMonth').hide();            
+            $('#submitYear').hide();         
+            $('#submitDayPrev').hide();   
+            $('#submitMonthPrev').hide();
+            $('#'+name).show();
+        }
+    </script>
+{% endblock %}
+{% block Dpp_body %}
+<div class="container">
+    <h3 class="txtcentre">{{ 'Dpp.customer.stats'|trans }} <b class="txttiger">{{customer.name }}</b></h3> 
+    <div class="zone-bordered ">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1 col-lg-3 col-lg-offset-1">Vous avez {{ nbProducts }} produits dans la base </div>
+            <div class="col-sm-4 col-sm-offset-1 col-lg-3 col-lg-offset-1">Vous avez {{ nbCategorys }} categories dans la base </div>
+            <br>
+        </div>
+    </div>
+    <br>
+    <div class="zone-bordered" style="background-color: #FFFFFF;">
+        <div class="row" style="padding-bottom: 10px">
+            <div id="B1" class="btn-group col-sm-offset-1 col-lg-offset-1"  >
+                <button type="button" name="submitDay"  onclick="Dpp_in(name)" class="btn btn-default ">Jour</button>
+                <button type="button" name="submitMonth" onclick="Dpp_in(name)" class="btn btn-default ">Mois</button>
+                <button type="button" name="submitYear" onclick="Dpp_in(name)" class="btn btn-default ">Année</button>
+                <button type="button" name="submitDayPrev" onclick="Dpp_in(name)" class="btn btn-default ">Jour-1</button>
+                <button type="button" name="submitMonthPrev" onclick="Dpp_in(name)" class="btn btn-default ">Mois-1</button>
+                <button type="button" name="submitYearPrev" onclick="Dpp_in(name)" class="btn btn-default ">Année-1</button>
+            </div>
+            <img src="/dynaprice/web/img/icones/forward.gif">
+            <div id="B2" class="btn-group ">
+                <button type="button" id="submitProduct" class="btn btn-default ">Produits</button>
+                <button type="button" name="submitCategory" class="btn btn-default ">Category</button>
+                <button type="button" name="submitRepartition" class="btn btn-default ">Repartition</button>
+            </div>
+        </div>
+    </div>
+    <br>
+        <script type="text/javascript">{{ chart(graphMonth) }}</script>
+        <script type="text/javascript">{{ chart(graphMonth1) }}</script>
+    <div class="row">    
+        <div id="submitDay" >    
+            <div id="graphMonth" class="col-lg-8 " style="padding-left: 30px; min-width: 400px; height: 400px;"></div>
+        </div>
+        <div id="submitMonth" style="display:none; ">    
+            <div id="graphMonth1" class="col-lg-8 " style="padding-left: 30px; min-width: 400px; height: 400px;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

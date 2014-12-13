@@ -76,8 +76,18 @@
                 <div class="col-sm-2 col-sm-offset-2 col-lg-2 col-lg-offset-2"> 
                     <input type="submit" class="btn pull-right btn-primary"  />      
                 </div>
-                <div class="col-sm-3 col-sm-offset-3 col-lg-3 col-lg-offset-3"> 
-                    <a href=" {{ listProdUrl }} " class="grph-btn pull-right">{{ 'Dpp.product.liste'|trans }}<i class="icon-chevron-right"></i></a>         
+                <div class="col-sm-4 col-sm-offset-2 col-lg-4 col-lg-offset-2"> 
+                    <div class="btn-group pull-right">
+                        <button type="button" class="btn grph-btn ">Listes</button>
+                        <button type="button" class="grph-btn pull-right dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href=" {{ listCategorysUrl }} ">{{ 'Dpp.category.liste'|trans }}<i class="icon-chevron-right"></i></a></li>
+                            <li><a href=" {{ listProductsUrl }} ">{{ 'Dpp.product.liste'|trans }}<i class="icon-chevron-right"></i></a></li>
+                        </ul>
+                    </div>        
                 </div>
             </div>   
         </form>

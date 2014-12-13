@@ -1,0 +1,102 @@
+{# src/Dpp/CustomersBundle/Resources/views/Categorys/categorysCustomerList.html.twig #}
+ 
+{% extends "DppCustomersBundle::layout.html.twig" %}
+
+{% block title %}
+    Liste  - {{ parent() }}
+{% endblock %}
+{% block Dpp_body %}
+<div class="row">
+    <h3 class="txtcentre">{{ 'Dpp.category.liste'|trans }} : <b class="txttiger">{{customer.name }}</b></h3>
+    {% for flashMessage in app.session.flashbag.get('info') %}
+        <div class="txtjaune">{{ flashMessage }}</div>
+    {% endfor %}
+</div>
+<div class="row">
+    
+    
+    {% if categorys %}
+        <div class="table-responsive ">
+            <table class=" table-striped table-bordered " >
+                <thead>
+                    <tr>
+                        <th class="col-lg-1"></th>
+                        <th class="col-lg-2">{{ 'Dpp.global.name'|trans }}</th>
+                        <th class="col-lg-2">{{ 'Dpp.category.parent'|trans }}</th>
+                        <th class="col-lg-2">{{ 'Dpp.global.urlRef'|trans }}</th>
+                        <th class="col-lg-2"></th>  
+                    </tr>
+                </thead>  
+                <tbody>
+                {% for category in categorys %}
+                <tr>
+                    {% if category.promoCodes %}
+                        <td data-toggle="collapse" data-target='#{{ category.id }}' class="clickable"><img src="/dynaprice/web/img/icones/add_obj.gif" alt='codes promo' ></td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    <td>{{ category.name }}</td>
+                    {% if category.parent %}
+                        <td>{{ category.parentName }}</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                    <td>{{ category.urlRef }}</td>
+                    <td>
+                        <a href="{{ path('dpp_category_edit', {'id': category.id }) }}" class="grph-btn" style= "float: left;" >
+                            <img src="/dynaprice/web/img/icones/write_obj.gif">&nbsp;{{ "Dpp.global.edit"|trans }}</a>
+                        &nbsp;&nbsp;
+                        <a href="{{ path('dpp_category_delete', {'id': category.id }) }}" class="btn-default" onclick='return(confirm("{{ 'Dpp.global.confirm_delete'|trans}}" ))' >
+                            <img src="/dynaprice/web/img/icones/delete_obj.gif">&nbsp;{{ "Dpp.global.delete"|trans }}</a>
+                        
+                    </td>                 
+                </tr>
+                <tr id="{{ category.id }}" class="collapse">
+                    <td colspan="5">
+                    {% if category.promoCodes %}             
+                        <div class=" col-lg-6 col-lg-offset-1" >
+                            <table class=" table-interne " >
+                                <thead>
+                                    <tr>
+                                        <th class="col-lg-2">Nb Visites</th>
+                                        <th class="col-lg-2">Code promo</th>
+                                        <th class="col-lg-2">Texte</th>
+                                    </tr>
+                                </thead>
+                                <tbody>                               
+                                    {% for ligCode in category.promoCodesAsArray %}
+                                    <tr>
+                                        <td>{{ ligCode[0] }}</td>
+                                        <td>{{ ligCode[1] }}</td>
+                                        <td>{{ ligCode[2] }}</td>
+                                    </tr>
+                                    {% endfor %}                      
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table><br>
+        </div>
+    {% else %}
+        {{ 'Dpp.category.notfound'|trans }}
+    {% endif %}
+    </div>
+</div>
+<div class="row">
+        
+        <div class="col-lg-3">
+            <a href=" {{ returnUrl }} " class="grph-btn "><i class="icon-chevron-left"></i>{{ 'Dpp.category.customer_return'|trans }}</a>
+        </div>
+        <div class="col-lg-3 col-lg-offset-4">
+            <a href="{{ path('dpp_category_add', {'customerRef': customer.domaine }) }}" class="grph-btn">
+                <img src="/dynaprice/web/img/icones/add_obj.gif">&nbsp{{ 'Dpp.category.add_buton'|trans }}
+            </a>
+        </div>
+</div> 
+
+{% endblock %}
+  

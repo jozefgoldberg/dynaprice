@@ -1,0 +1,12 @@
+{# src\Dpp\CustomersBundle\Resources\views\Categorys\categoryUpdate.html.twig #}
+
+{% extends "DppCustomersBundle::layout.html.twig" %}
+
+{% block Dpp_body %}
+
+<h3> {{ 'Dpp.category.update'|trans }} </h3>
+<div class="label-and-input">
+	{% include "DppCustomersBundle:Categorys:categoryForm.html.twig" %}
+</div>
+	
+{% endblock %}

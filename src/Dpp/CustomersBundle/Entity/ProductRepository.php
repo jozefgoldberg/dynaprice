@@ -3,6 +3,8 @@
 namespace Dpp\CustomersBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Dpp\CustomersBundle\Entity\Customer;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * ProductRepository
@@ -12,5 +14,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductRepository extends EntityRepository
 {
-   
+    public function getCountForCustomer(Customer $customer)
+    {
+        $entityManager = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('count(*)', 'count');
+        $query = $entityManager->createNativeQuery(
+                                                'Select count(*) from dpp_product where customer_id = :customer_id',
+                                               $rsm)
+                                ->setParameter('customer_id', $customer->getId());
+        return $query->getResult();
+    }
+
 }

@@ -2,4 +2,8 @@
 Dpp\CustomersBundle\Entity\Customer:
     constraints:
         - Callback: [validate]
+
+Dpp\CustomersBundle\Entity\Category:
+    constraints:
+        - Callback: [validate]
         
