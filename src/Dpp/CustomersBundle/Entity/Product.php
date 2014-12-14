@@ -225,6 +225,11 @@ class Product implements PromoCodeInterface
         return $this->promoCodes;
     }
     
+    public function hasPromoCodes() 
+    {
+        return !($this->getPromoCodes() == null);
+    }
+    
     /*
     * get promoCode as array
     * retur array or false
@@ -233,6 +238,18 @@ class Product implements PromoCodeInterface
     {
         if ($this->getPromoCodes() == null) return FALSE;
         return json_decode($this->getPromoCodes());
+    }
+    
+    /*
+    * get promoCode as array
+    * retur array or false
+    * if no existe compute category code or parents or customer
+    */
+    public function searchPromoCodesAsArray()
+    {
+        if ($this->hasPromoCodes()) return $this->getPromoCodesAsArray();
+        if ($this->getCategory() == null) return FALSE;
+        return $this->getCategory()->searchPromoCodesAsArray();
     }
     
     

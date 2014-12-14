@@ -4,8 +4,26 @@
  
 <div class="well">
     <form method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-    
+        <div class="txtred">{{ form_errors(form) }}</div>
+        <div class="zone-bordered ">
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1 col-lg-2 col-lg-offset-1">{{ form_label(form.customer) }}</div><div class="col-sm-3 col-lg-3">{{ form_widget(form.customer) }}</div>
+                <div class="col-sm-2 col-lg-2 ">{{ form_label(form.email) }}</div><div class="col-sm-2 col-lg-2">{{ form_widget(form.email) }}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1 col-lg-2 col-lg-offset-1">{{ form_label(form.firstName) }}</div><div class="col-sm-3 col-lg-3">{{ form_widget(form.firstName) }}</div>
+                <div class="col-sm-2 col-lg-2">{{ form_label(form.lastName) }}</div><div class="col-sm-2 col-lg-2">{{ form_widget(form.lastName) }}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1 col-lg-2 col-lg-offset-1">{{ form_label(form.plainPassword.first) }}</div><div class="col-sm-3 col-lg-3">{{ form_widget(form.plainPassword.first) }}</div>
+                <div class="col-sm-2 col-lg-2"></div><div class="col-sm-2 col-lg-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 col-sm-offset-1 col-lg-2 col-lg-offset-1">{{ form_label(form.plainPassword.second) }}</div><div class="col-sm-3 col-lg-3">{{ form_widget(form.plainPassword.second) }}</div>
+                <div class="col-sm-2 col-lg-2">{{ form_label(form.roles) }}</div><div class="col-sm-2 col-lg-3">{{ form_widget(form.roles) }}</div>
+            </div>
+        </div>
+        <br><br>
         <div class="row"> 
             <div class="span2"> 
                 <a href=" {{ returnUrl }} " class="btn "><i class="icon-chevron-left"></i>Cancel</a>        

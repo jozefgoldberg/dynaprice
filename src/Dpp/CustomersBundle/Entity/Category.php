@@ -215,6 +215,11 @@ class Category implements PromoCodeInterface
         return $this->promoCodes;
     }
     
+    public function hasPromoCodes() 
+    {
+        return !($this->getPromoCodes() == null);
+    }
+    
     /*
     * get promoCode as array
     * retur array or false
@@ -225,6 +230,17 @@ class Category implements PromoCodeInterface
         return json_decode($this->getPromoCodes());
     }
     
+    /*
+    * get promoCode as array
+    * retur array or false
+    * if no existe compute category code or parents or customer
+    */
+    public function searchPromoCodesAsArray()
+    {
+        if ($this->hasPromoCodes()) return $this->getPromoCodesAsArray();
+        if ($this->hasParent())     return $this->getParent()->searchPromoCodesAsArray();
+        return $this->getCustomer()->searchPromoCodesAsArray();
+    }
     
     /**
      * Set state

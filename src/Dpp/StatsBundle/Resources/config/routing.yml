@@ -17,5 +17,5 @@ dpp_stats_homepage:
 
 dpp_stats_customer:
     path:     /{customerRef}
-    defaults: { _controller: DppStatsBundle:CustomerStats:customerStats }
+    defaults: { _controller: DppStatsBundle:CustomerStats:customerStats } 
 

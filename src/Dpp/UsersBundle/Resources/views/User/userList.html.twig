@@ -11,40 +11,56 @@
     <h3 class="txtcentre">{{ 'Dpp.user.liste'|trans }}</h3>
 </div>
 <div class="row">
-    <div class="span2"></div>
-    <div class="span10">
-        <table class="table-bordered">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+        <div class="table-responsive ">
+            <table class=" table-striped table-bordered " >
             <thead>
                 <tr>
-                    <th class="span2">Compte</th>
-                    <th class="span3">User</th>
-                    <th class="span3">Email</th>
-                    <th class="span1">Actions</th>
+                    <th class="col-lg-1">Compte</th>
+                    <th class="col-lg-2">User</th>
+                    <th class="col-lg-2">Email</th>
+                    <th class="col-lg-1"></th>
                 </tr>
             </thead>   
             <tbody>
                 {% for user in users %}
                 <tr>
-                    <td> {% if user.customer %}
-                        {{ user.customer.name }}
+                    <td> 
+                        {% if user.customer %}
+                            {{ user.customer.name }}
                         {% endif %}
                     </td>
                     <td>{{ user.description }}</td>
                     <td>{{ user.email }}</td>
                     <td>
-                        <a href="{{ path('Dppuser_delete', {'email': user.email}) }}">delete</a>
-                        <a href="{{ path('Dppuser_update', {'email': user.email}) }}">edit</a>
-                    </td>
+                        <div class="btn-group ">
+                            <button type="button" class="btn grph-btn "><b>Actions</b></button>
+                            <button type="button" class="grph-btn pull-right dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ path('Dppuser_update', {'email': user.email}) }}">
+                                    <img src="/dynaprice/web/img/icones/write_obj.gif">&nbsp;{{ "Dpp.global.edit"|trans }}</a></li>
+                                <li><a href="{{ path('Dppuser_delete', {'email': user.email}) }}" onclick='return(confirm("{{ 'Dpp.global.confirm_delete'|trans}}" ))' >
+                                <img src="/dynaprice/web/img/icones/trash.gif">&nbsp;{{ "Dpp.global.delete"|trans }}</a></li>
+                            </ul>
+                        </div> 
+                    </td>  
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>
+        </table><br><br><br><br>
     </div>
 </div>
 <div class="row">
-    <div class="span8"> </div>
-    <div class="span2"><br>
-    <a href="{{ path('Dppuser_create') }}" class="btn  pull-right"><i class="icon-plus-sign"></i> {{ 'Dpp.user.new_button'|trans }}</a>
+        <div class="col-lg-3"> </div>
+        <div class="col-lg-3 col-lg-offset-5">
+            <a href="{{ path('Dppuser_create') }}" class="grph-btn">
+                <img src="/dynaprice/web/img/icones/add_obj.gif">&nbsp;{{ 'Dpp.user.new_button'|trans }}
+            </a>
+        </div>
 </div> 
 {% endblock %}
   

@@ -96,10 +96,7 @@ class AjaxServeurController extends Controller
                     if ($this->category->getPricingType() == 0) {
                         $pricingType = $this->customer->getPricingType();
                     }
-                    $tabPromo = $this->category->getPromoCodesAsArray();
-                    if ($tabPromo === FALSE) {
-                        $tabPromo = $this->customer->getPromoCodesAsArray();
-                    }
+                    $tabPromo = $this->category->searchPromoCodesAsArray();
                     if (!$tabPromo === FALSE) {
                         $this->message = $this->getPromoMessage( $tabPromo, $pricingType, $visites);
                     }
@@ -153,10 +150,7 @@ class AjaxServeurController extends Controller
                     if ($this->product->getPricingType() == 0) {
                         $pricingType = $this->customer->getPricingType();
                     }
-                    $tabPromo = $this->product->getPromoCodesAsArray();
-                    if ($tabPromo === FALSE) {
-                        $tabPromo = $this->customer->getPromoCodesAsArray();
-                    }
+                    $tabPromo = $this->product->searchPromoCodesAsArray();  // recherche dans l'arbre
                     if (!$tabPromo === FALSE) {
                         $this->message = $this->getPromoMessage( $tabPromo, $pricingType, $visites);
                     }
@@ -373,7 +367,7 @@ class AjaxServeurController extends Controller
             $ts = $date->getTimestamp() - $buyerProduct->getLastAccess()->getTimestamp();     
             $ts = $ts / 3600; // en heures
             if ($ts > $this->customer->getVisitTimeInterval() ) {
-                $buyerProduct->setTotalAccess($bp->getTotalAccess()+1);
+                $buyerProduct->setTotalAccess($buyerProduct->getTotalAccess()+1);
                 $buyerProduct->setLastAccess($date);
                 $this->logAction();
             }

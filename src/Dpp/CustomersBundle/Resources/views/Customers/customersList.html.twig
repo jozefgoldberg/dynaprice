@@ -11,6 +11,14 @@
     <h3 class="txtcentre">{{ 'Dpp.customer.liste'|trans }}</h3>
 </div>
 <div class="row">
+        <div class="col-lg-3"> </div>
+        <div class="col-lg-3 col-lg-offset-4">
+            <a href="{{ path('dpp_customers_add') }}" class="grph-btn">
+                <img src="/dynaprice/web/img/icones/add_obj.gif">&nbsp{{ 'Dpp.customer.add_buton'|trans }}
+            </a>
+        </div>
+</div> 
+<div class="row">
     <div class="col-lg-2"></div>
     <div class="col-lg-8">
         {% if customers %}
@@ -43,6 +51,8 @@
                                     <img src="/dynaprice/web/img/icones/types.gif">&nbsp;{{ "Dpp.customer.liste_categorys"|trans }}</a></li>
                                 <li><a href="{{ path('dpp_products_customer', {'customerRef': customer.domaine }) }}">
                                     <img src="/dynaprice/web/img/icones/pack_sbook.gif">&nbsp;{{ "Dpp.customer.liste_products"|trans }}</a></li>
+                                <li><a href="{{ path('dpp_stats_customer', {'customerRef': customer.domaine }) }}">
+                                    <img src="/dynaprice/web/img/icones/stats.gif">&nbsp;{{ "Dpp.customer.statistics"|trans }}</a></li>
                                 <li><a href="{{ path('dpp_customers_delete', {'customerRef': customer.domaine }) }}" onclick='return(confirm("{{ 'Dpp.global.confirm_delete'|trans}}" ))' >
                                 <img src="/dynaprice/web/img/icones/trash.gif">&nbsp;{{ "Dpp.global.delete"|trans }}</a></li>
                             </ul>
@@ -51,20 +61,13 @@
                 </tr>
                 {% endfor %}
                 </tbody>
-            </table><br><br><br><br><br><br>
+            </table><br><br><br><br><br><br><br><br>
             </div>
         {% else %}
             {{ 'Dpp.customer.notfound'|trans }}                                                 
         {% endif %}
     </div>
 </div>
-<div class="row">
-        <div class="col-lg-3"> </div>
-        <div class="col-lg-3 col-lg-offset-4">
-            <a href="{{ path('dpp_customers_add') }}" class="grph-btn">
-                <img src="/dynaprice/web/img/icones/add_obj.gif">&nbsp{{ 'Dpp.customer.add_buton'|trans }}
-            </a>
-        </div>
-</div> 
+
 {% endblock %}
   

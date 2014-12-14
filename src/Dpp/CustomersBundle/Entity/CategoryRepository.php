@@ -70,7 +70,7 @@ class CategoryRepository extends EntityRepository
         }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('count(*)', 'count');
-        $query = $entityManager->createNativeQuery(
+        $query = $this->entityManager->createNativeQuery(
                                                 'Select count(*) from dpp_category where customer_id = :customer_id',
                                                $rsm)
                                 ->setParameter('customer_id', $customer->getId());
